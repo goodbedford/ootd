@@ -3,24 +3,25 @@
 <head>
   <title>#OOTD</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="">
   <div class="container">
     <div class="row row-container">
-      <div class="col-xs-12 col-lg-8 col-lg-offset-2">
+      <div class="col-xs-9 col-xs-offset-1 col-lg-6 col-lg-offset-3">
         <!-- row header -->
-        <div class="row row-header">
+        <div id="row-header" class="row row-header">
           <header class="col-xs-12">
-            <div class="pull-right">
-              <span><a href="#">Sign Up </a></span>|
-              <span><a href="#">Login In</a></span>
+            <div class="pull-right header">
+              <span class=""><a id="sign-up-btn" href="#">Sign Up </a></span>|
+              <span class=""><a id="login-btn" href="#">Login In</a></span>
             </div>
           </header>
         </div>
         <!-- row login -->
         <div class="row row-login">
-          <section class="col-xs-12 hide">
+          <section class="col-xs-12">
             <form id="form-sign-up">
               <div class="form-group">
                 <label for="login-email">Email</label>
@@ -53,40 +54,55 @@
         <!-- looks container -->
         <div class="row row-looks-container">
           <div id="looks-container" class="col-xs-12 looks-container">
-
-            <!-- row looks -->
-            <div class="row row-looks">
-              <section class="col-xs-12">
-                <img src="./images/outfit-5.jpg" alt="outfit-img">
-              </section>
-            </div>
-            <!-- row Icons -->
-            <div class="row row-icons">
-              <div class="col-xs-12">
-                <button class="btn btn-lg icon-btn">All</button>
-                <button class="btn btn-lg icon-btn">Tops</button>
-                <button class="btn btn-lg icon-btn">Bottoms</button>
-                <button class="btn btn-lg icon-btn">Shoes</button>
-                <button class="btn btn-lg icon-btn">Accessories</button>
-              </div>
-            </div>
-            
           </div>
         </div> 
         <!-- end looks container -->
+        <!-- row grid icons -->
+        <div class="row row-grid-icons hide">
+          <div class="col-xs-12">
+            <button class="icon-btn"><span class="glyphicon glyphicon-star">All</span></button>
+            <button class="icon-btn"><span class="glyphicon glyphicon-star">Tops</span></button>
+            <button class="icon-btn"><span class="glyphicon glyphicon-star">Bottoms</span></button>
+            <button class="icon-btn"><span class="glyphicon glyphicon-star">Shoes</span></button>
+            <button class="icon-btn"><span class="glyphicon glyphicon-star">Pieces</span></button>
+          </div>
+        </div>
         <!-- row footer -->
         <div class="row row-footer">
-          <div class="col-xs-8 text-center"><span class="logo-text">#OOTD</span></div>
-          <div class="col-xs-4"><button class="btn btn-lg">Favs</button>
+          <div class="col-xs-9 text-center"><span class="logo-text">#OOTD</span></div>
+          <div class="col-xs-3"><button class="btn btn-lg fav-btn glyphicon glyphicon-heart"></button>
         </div>
       </div>
     </div>
 
-    <!-- underscore template -->
+    <!-- underscore Looks template -->
   <script type="text/template" id="looks-template">
-
+        <!-- looks-template -->
+        <!-- row looks -->
+        <div class="row row-looks b-check">
+          <section class="col-xs-12">
+            <img src="<%= url %>" alt="outfit-img" class="img-responsive">
+          </section>
+        </div>
+        <!-- row Icons -->
+        <div class="row row-icons">
+          <div class="col-xs-12">
+            <button class="icon-btn"><span class="glyphicon glyphicon-star">All</span></button>
+            <button class="icon-btn"><span class="glyphicon glyphicon-star">Tops</span></button>
+            <button class="icon-btn"><span class="glyphicon glyphicon-star">Bottoms</span></button>
+            <button class="icon-btn"><span class="glyphicon glyphicon-star">Shoes</span></button>
+            <button class="icon-btn"><span class="glyphicon glyphicon-star">Pieces</span></button>
+          </div>
+        </div>
+        <!-- end looks-template -->
   </script> 
 
+    <!-- underscore Looks Grid template -->
+  <script type="text/template" id="grid-template">
+    <div class="col-xs-4">
+      <img src="<%= url %>" alt="outfit logo" class="img-responsive grid-img">
+    </div>
+  </script> 
 
     <!--Post Modal 
     <div id="postModal" class="modal fade" role="dialog">
