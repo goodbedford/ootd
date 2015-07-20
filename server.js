@@ -29,7 +29,10 @@ var express = require("express"),
   // ]
 
 // Connect to Database
-mongoose.connect('mongodb://localhost/ootd');
+mongoose.connect(
+    process.env.MONGOLAB_URI ||
+    process.env.MONGOHQ_URL ||
+    'mongodb://localhost/ootd');
 
 // middleware
 app.use(bodyParser.urlencoded({extended: false}));
@@ -128,7 +131,7 @@ app.post('/login', function(req, res){
   console.log("login req.body-",req.body);
   db.User.findOne({email: req.body.email}, function(err, foundUser){
     req.login(foundUser);
-    
+
   });
 });
 
@@ -137,4 +140,4 @@ app.post('/login', function(req, res){
 
 
 
-app.listen(3000);
+app.listen(process.env.PORT || 3000);
