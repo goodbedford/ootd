@@ -84,7 +84,12 @@ $(document).ready(function(){
     //Fav Click
     $("#fav-grid-btn").on("click", function(e){
       console.log("i clicked fav btn", user._id);
-      $("#grid-container").toggleClass("hide");
+        if($("#grid-container").hasClass("grid-active") ){
+                  getLooks();
+        }
+        $("#grid-container").toggleClass("hide").toggleClass("grid-active");
+
+      // $("#grid-container").toggleClass("hide").addClass("grid-active");
 
       $("#looks-container").toggleClass("hide").empty();
       $.ajax({
