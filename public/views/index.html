@@ -15,6 +15,7 @@
         <div id="row-header" class="row row-header">
           <header class="col-xs-12">
             <div class="pull-right header">
+              <span id="currentUser" class="currentUser"></span>
               <span class=""><a id="guest-btn" href="#">Guest </a></span>|
               <span class=""><a id="sign-up-btn" href="#">Sign Up </a></span>|
               <span class=""><a id="login-btn" href="#">Login</a></span>
@@ -59,10 +60,22 @@
           <div id="looks-container" class="col-xs-12 looks-container">
           </div>
           <div id="grid-container" class="col-xs-12 looks-container hide">
-            <h2>Favorite Outfits</h2>
+            <div class="col-xs-12">
+              <a href="#tops" class="a-tags">Tops</a>
+              <a href="#legs" class="a-tags">Legs</a>
+              <a href="#shoes" class="a-tags">Shoes</a>
+              <a href="#pieces" class="a-tags">Pieces</a>
+            </div>
+            <h2 class="col-xs-12"><a href="" >Favorite Outfits</a></h2>
             <div id="fav-all-container"></div>
-            <h2 class="clearfix">Favorite Tops</h2>
+            <h2 class="col-xs-12"><a name="tops" >Favorite Tops</a></h2>
             <div id="fav-tops-container"></div>
+            <h2 class="col-xs-12"><a name="legs" >Favorite Legs</a></h2>
+            <div id="fav-legs-container"></div>
+            <h2 class="col-xs-12"><a name="shoes" >Favorite Shoes</a></h2>
+            <div id="fav-shoes-container"></div>
+            <h2 class="col-xs-12"><a name="pieces" >Favorite Pieces</a></h2>
+            <div id="fav-pieces-container"></div>
           </div>
         </div> 
         <!-- end looks container -->
@@ -98,7 +111,7 @@
         <div class="row row-icons border-btm">
           <div class="col-xs-12">
               <button class="icon-btn btn-all border-rt"><span class="icon-pad">All</span></button>
-              <button class="icon-btn btn-top border-rt"><span class="icon-pad">Tops</span></button>
+              <button class="icon-btn btn-tops border-rt"><span class="icon-pad">Tops</span></button>
               <button class="icon-btn btn-legs border-rt"><span class="icon-pad">Legs</span></button>
               <button class="icon-btn btn-shoes border-rt"><span class="icon-pad">Shoes</span></button>
               <button class="icon-btn btn-pieces border-none"><span class="icon-pad">Pieces</span></button>

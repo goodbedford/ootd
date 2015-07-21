@@ -59,7 +59,7 @@ $(document).ready(function(){
       }
     });
   }
-  //Favorites
+  ////////////Favorites ///////////////
 
   //Favs ALL
   function setLooksContainer(user) {
@@ -81,17 +81,88 @@ $(document).ready(function(){
         }
       });
     });
+    //favs-tops
+    $("#looks-container").on("click", ".btn-tops", function(e){
+      //e.preventDefault();
+      console.log("this in looks container click-",$(this))
+      var $iconRow = $(this).parent().parent();
+      //console.log("the iconRow", $iconRow.html() );
+      var $img = $iconRow.prev(".row-looks").find("section img");
+      console.log("the selected img", $img.attr("src") );
+      var favTops = {url: $img.attr("src")};
+      $.ajax({
+        url: "/api/users/" + user._id + "/favs/tops",
+        type: "POST",
+        data: favTops,
+        success: function(data){
+          console.log("this Tops post was add", data);
+        }
+      });
+    });
+    //favs-legs
+    $("#looks-container").on("click", ".btn-legs", function(e){
+      //e.preventDefault();
+      console.log("this in looks container click-",$(this))
+      var $iconRow = $(this).parent().parent();
+      //console.log("the iconRow", $iconRow.html() );
+      var $img = $iconRow.prev(".row-looks").find("section img");
+      console.log("the selected img", $img.attr("src") );
+      var favLegs = {url: $img.attr("src")};
+      $.ajax({
+        url: "/api/users/" + user._id + "/favs/legs",
+        type: "POST",
+        data: favLegs,
+        success: function(data){
+          console.log("this Legs post was add", data);
+        }
+      });
+    });
+    //favs-shoes
+    $("#looks-container").on("click", ".btn-shoes", function(e){
+      //e.preventDefault();
+      console.log("this in looks container click-",$(this))
+      var $iconRow = $(this).parent().parent();
+      //console.log("the iconRow", $iconRow.html() );
+      var $img = $iconRow.prev(".row-looks").find("section img");
+      console.log("the selected img", $img.attr("src") );
+      var favShoes = {url: $img.attr("src")};
+      $.ajax({
+        url: "/api/users/" + user._id + "/favs/shoes",
+        type: "POST",
+        data: favShoes,
+        success: function(data){
+          console.log("this shoes post was add", data);
+        }
+      });
+    });
+    //favs-pieces
+    $("#looks-container").on("click", ".btn-pieces", function(e){
+      //e.preventDefault();
+      console.log("this in looks container click-",$(this))
+      var $iconRow = $(this).parent().parent();
+      //console.log("the iconRow", $iconRow.html() );
+      var $img = $iconRow.prev(".row-looks").find("section img");
+      console.log("the selected img", $img.attr("src") );
+      var favPieces = {url: $img.attr("src")};
+      $.ajax({
+        url: "/api/users/" + user._id + "/favs/pieces",
+        type: "POST",
+        data: favPieces,
+        success: function(data){
+          console.log("this pieces post was add", data);
+        }
+      });
+    });
     //Fav Click
     $("#fav-grid-btn").on("click", function(e){
       console.log("i clicked fav btn", user._id);
-        if($("#grid-container").hasClass("grid-active") ){
-                  getLooks();
-        }
-        $("#grid-container").toggleClass("hide").toggleClass("grid-active");
-
+      if($("#grid-container").hasClass("grid-active") ){
+                getLooks();
+      }
+      $("#grid-container").toggleClass("hide").toggleClass("grid-active");
       // $("#grid-container").toggleClass("hide").addClass("grid-active");
-
       $("#looks-container").toggleClass("hide").empty();
+      //add all favs to view
       $.ajax({
         url: "/api/users/" + user._id + "/favs/all",
         type: "GET",
@@ -104,7 +175,58 @@ $(document).ready(function(){
           });
         }
       });
-
+      //add all tops to view
+      $.ajax({
+        url: "/api/users/" + user._id + "/favs/tops",
+        type: "GET",
+        success: function(data){
+          console.log("the tops data is", data);
+          _.each(data.fav_tops, function(look){
+            console.log("inside each grid");
+            var $look = gTemplate(look);
+            $("#fav-tops-container").append($look);
+          });
+        }
+      });
+      // all legs to view
+      $.ajax({
+        url: "/api/users/" + user._id + "/favs/legs",
+        type: "GET",
+        success: function(data){
+          console.log("the legs data is", data);
+          _.each(data.fav_legs, function(look){
+            console.log("inside each grid");
+            var $look = gTemplate(look);
+            $("#fav-legs-container").append($look);
+          });
+        }
+      });
+      // all shoes to view
+      $.ajax({
+        url: "/api/users/" + user._id + "/favs/shoes",
+        type: "GET",
+        success: function(data){
+          console.log("the shoes data is", data);
+          _.each(data.fav_shoes, function(look){
+            console.log("inside each grid");
+            var $look = gTemplate(look);
+            $("#fav-shoes-container").append($look);
+          });
+        }
+      });
+      // all pieces to view
+      $.ajax({
+        url: "/api/users/" + user._id + "/favs/pieces",
+        type: "GET",
+        success: function(data){
+          console.log("the pieces data is", data);
+          _.each(data.fav_pieces, function(look){
+            console.log("inside each grid");
+            var $look = gTemplate(look);
+            $("#fav-pieces-container").append($look);
+          });
+        }
+      });
     });
   }
   //Guest Sign in
@@ -121,7 +243,8 @@ $(document).ready(function(){
       data: tempUser,
       success: function(data){
         console.log(data);
-        setLooksContainer(data) 
+        setLooksContainer(data);
+        $("#currentUser").text("Username: " + data.username); 
       }
     });
   })
@@ -199,7 +322,6 @@ $(document).ready(function(){
       }
     }); 
     $("#form-login").trigger("reset");
-
   });
 
 
@@ -211,8 +333,6 @@ $(document).ready(function(){
 
     return tempImg;
   }
-
-
 });
 
 

@@ -6,6 +6,14 @@ var express = require('express'),
     baseUrl = "http://localhost:3000/api/";
 
 
+
+var testUser = new User({
+  email: tester@gmail.com,
+  username: "two chains",
+  password: "test";
+});
+
+
 //GET LOOKS
 describe("Get /api/looks", function(){
   it('should return statusCode 200', function(done){

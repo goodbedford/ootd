@@ -1,6 +1,35 @@
 
+@media screen and (max-width:900px) {
+  .img-section{
+    /*height: 500px;*/
+  }
+  .row-looks{
+    /*height: 500px;*/
+  }
+  div.looks-container{
+    /*height: 500px;*/
+  }
+}
+
+@media screen and (min-width:320px) {
+  .row-looks{
+    height: 294px;
+  }
+  div.looks-container{
+  overflow: scroll;
+  height: 350px;
+  background-color: white;
+  }
+  .row-looks-container{
+    /*height: 480px; */
+  }
+}
 
 
+
+.a-tags{
+  margin
+}
 .b-check{
   border:1px solid red;
   padding: 5px 50px
@@ -25,11 +54,10 @@ body{
 .border-none{
   border: none;
 }
-div.looks-container{
-  overflow: scroll;
-  height: 330px;
-  background-color: white;
 
+#currentUser{
+  margin-right: .5em;
+  color: orange;
 }
 .fav-btn{
   width: 100%;

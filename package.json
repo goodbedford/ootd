@@ -17,6 +17,7 @@
     "cors": "^2.7.1",
     "express": "^4.13.1",
     "mongoose": "^4.0.8",
+    "request": "^2.60.0",
     "underscore": "^1.8.3"
   }
 }
