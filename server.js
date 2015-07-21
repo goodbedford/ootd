@@ -92,11 +92,13 @@ app.get('/api/looks', function(req, res){
 
 });
 
-//POST LOOKS /api/looks - from Instagram #ootd
-app.post('/api/looks', function(req, res){
-  
+app.get('/api/users/:id/favs/all', function(req, res){
+  console.log("the req params-", req.params.id);
+  db.User.findOne({_id: req.params.id}).populate('fav_all').exec(function(err, user){
+    console.log("server get user id fav all",user);
+    res.json(user);
+  });
 });
-
 
 //POST LOOKS /api/users/:id/looks
 app.post('/api/users/:id/favs/all', function(req, res){
@@ -132,7 +134,7 @@ app.post('/api/users', function(req, res){
   tempUser.save(function(err, user){
     console.log("saved new user-", tempUser._id);
     req.login(user);
-    res.redirect(user);
+    res.json(user); 
   });
 
   //res.status(201).json(tempUser);

@@ -81,25 +81,47 @@ $(document).ready(function(){
         }
       });
     });
-
     //Fav Click
     $("#fav-grid-btn").on("click", function(e){
+      console.log("i clicked fav btn", user._id);
+      $("#grid-container").toggleClass("hide");
 
+      $("#looks-container").toggleClass("hide").empty();
       $.ajax({
-        user: "/api/users/" + user._id + "/favs/all",
+        url: "/api/users/" + user._id + "/favs/all",
         type: "GET",
         success: function(data){
-        _.each(data.data, function(look){
- 
-          var $look = gTemplate(look);
-          $("#looks-container").append($look);
-        });
+          console.log("the data is", data);
+          _.each(data.fav_all, function(look){
+            console.log("inside each grid");
+            var $look = gTemplate(look);
+            $("#fav-all-container").append($look);
+          });
         }
       });
 
     });
   }
-  
+  //Guest Sign in
+  $("#guest-btn").on("click", function(e){
+    e.preventDefault();
+    console.log("I logged in as guest");
+    var tempUser = {};
+        tempUser.email = "test@gmail.com";
+        tempUser.password = "test";
+    console.log(tempUser);
+    $.ajax({
+      url: "/login",
+      type: "POST",
+      data: tempUser,
+      success: function(data){
+        console.log(data);
+        setLooksContainer(data) 
+      }
+    });
+  })
+
+
   //Sign Up
   $("#sign-up-btn").on("click", function(){
     console.log("I clicked sign-up-btn");
