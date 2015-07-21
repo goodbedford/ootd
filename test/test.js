@@ -14,23 +14,23 @@ var testUser = new User({
 });
 
 
-//GET LOOKS
-describe("Get /api/looks", function(){
-  it('should return statusCode 200', function(done){
-    request.get(baseUrl + "looks", function(err, res, body){
-      expect(res.statusCode).to.be.equal(200);
-      _.each(body, function(look){
-        console.log(look.url);
-      });
+// //GET LOOKS
+// describe("Get /api/looks", function(){
+//   it('should return statusCode 200', function(done){
+//     request.get(baseUrl + "looks", function(err, res, body){
+//       expect(res.statusCode).to.be.equal(200);
+//       _.each(body, function(look){
+//         console.log(look.url);
+//       });
 
-      console.log("this is body",body);
-      done();
-    });
-  });
-});
+//       console.log("this is body",body);
+//       done();
+//     });
+//   });
+// });
 
 
-
+//POST
 
 //POST
 describe("POST /api/users/:id/favs/all", function(){

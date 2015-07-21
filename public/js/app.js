@@ -8,6 +8,7 @@ $(document).ready(function(){
 
   //load page with looks
   getLooks();
+  $('body').scrollspy({ target: '#spy-target' });
 
   var looks =[
       { url: "http://topmodafemei.ro/wp-content/uploads/2014/08/outfit6.png",
@@ -63,6 +64,10 @@ $(document).ready(function(){
 
   //Favs ALL
   function setLooksContainer(user) {
+    $('[data-spy="scroll"]').each(function () {
+      var $spy = $(this).scrollspy('refresh')
+    });
+
     //favs-all
     $("#looks-container").on("click", ".btn-all", function(e){
       //e.preventDefault();

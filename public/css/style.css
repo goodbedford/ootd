@@ -28,13 +28,14 @@
 
 
 .a-tags{
-  margin
+  margin: 0 .4em;
 }
 .b-check{
   border:1px solid red;
   padding: 5px 50px
 }
 body{
+  position: relative;
 }
 
 .border-thin{
@@ -54,7 +55,10 @@ body{
 .border-none{
   border: none;
 }
-
+.btn-active{
+  background-color: orange;
+  color: blue;
+}
 #currentUser{
   margin-right: .5em;
   color: orange;
@@ -65,11 +69,28 @@ body{
   padding: 0 auto;
   margin: 0 auto;
 }
+.fav-header{
+  background-color: #FF0080;
+  color:black;
+  padding: .3em;
+}
+.fav-header a{
+  text-decoration: none;
+  color:white;
+}
+
+.fixed-top{
+  position: fixed;
+  background-color: white;
+  z-index: 3000;
+  padding: 5px;
+  width:69%;
+}
 .grid-img{
   width: 150px;
 }
 .header {
-  font-size: 1.3em;
+  font-size: .8em;
   padding: 20px 0;
 
 }
@@ -115,4 +136,7 @@ font-size: 20px;
 margin: 20px 0;
 }
 
+.top-pad-7{
+  padding-top: 7px;
+}
 
