@@ -11,8 +11,6 @@ var express = require("express"),
           origin: 'http://localhost:3000'
     };
 
-
-   
   // var looks =[
   //     { url: "http://topmodafemei.ro/wp-content/uploads/2014/08/outfit6.png",
   //       createdDate: new Date()
@@ -37,11 +35,12 @@ mongoose.connect(
 // middleware
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(__dirname + "/public"));
+
 app.use(cors({credentials: true, origin: true}));
 
 //session
 app.use(session({
-  saveUninitalized: true,
+  saveUninitialized: true,
   resave: true,
   secret: 'OurSuperSecretCookieSecret',
 }));
@@ -53,12 +52,12 @@ app.use('/', function(req, res, next){
   };
 
   //find current logged in user based on session.userId
-  req.currentUser = function (callback) {
-    db.User.findOne({_id: req.session.userId}, function(err, user) {
-      req.user = user;
-      callback(null, user);
-    });
-  };
+  // req.currentUser = function (callback) {
+  //   db.User.findOne({_id: req.session.userId}, function(err, user) {
+  //     req.user = user;
+  //     callback(null, user);
+  //   });
+  // };
 
   //destro session.userId
   req.logout = function(){
@@ -85,33 +84,43 @@ app.use('/', function(req, res, next){
 // });
 
 app.get('/', function(req, res){
-  res.sendfile('public/views/index.html');
+  res.sendFile(__dirname + '/public/views/index.html');
 })
 
 //GET LOOKS /api/looks - from Instagram #ootd
 app.get('/api/looks', function(req, res){
-  //res.redirect("https://api.instagram.com/v1/tags/ootd/media/recent?client_id=6f1ace0e97194e09adbe7c7740d51531");
-  //console.log(req.body);
-  //res.json(looks);
+
 });
 
-// app.get("https://api.instagram.com/v1/tags/ootd/media/recent?client_id=6f1ace0e97194e09adbe7c7740d51531", function(req, res){
-//   res.json(req.body)
-// });
+//POST LOOKS /api/looks - from Instagram #ootd
+app.post('/api/looks', function(req, res){
+  
+});
 
-//POST LOOKS /api/looks
+
+//POST LOOKS /api/users/:id/looks
 app.post('/api/users/:id/favs/all', function(req, res){
-  var id = req.body.id;
-  console.log('The body of post-', req.body);
-  var newLookAll = new Look({url: req.body.url});
-  newLookAll.save();
-  db.User.findOne({_id: id}, function(err, foundUser){
-    foundUser.fav_all.push(newLookAll._id);
-    foundUser.save();
-    res.status(201).json(foundUser);
-  });
-});
+  console.log("the looks body Id", req.params.id);
 
+  var look = new db.Look({url:req.body.url});
+  console.log("this is the look--", look);
+  look.save(function(err, look){
+    db.User.findOne({_id: req.params.id}, function(err, user){
+      user.fav_all.push(look._id);
+      user.save(function(err, user){
+       res.status(201).json(user);  
+      });
+    });
+  });
+
+});
+//GET USER
+app.get('/api/users', function(req, res){
+  db.User.find({}, function(err, user){
+    console.log("user sent", user);
+    res.json(user);
+  })
+})
 //POST USER /api/users
 app.post('/api/users', function(req, res){
   console.log(req.body)
@@ -120,18 +129,21 @@ app.post('/api/users', function(req, res){
     username: req.body.username,
     password: req.body.password
   });
-  tempUser.save();
-  console.log("saved new user-", tempUser._id);
-  res.redirect("/login");
+  tempUser.save(function(err, user){
+    console.log("saved new user-", tempUser._id);
+    req.login(user);
+    res.redirect(user);
+  });
+
   //res.status(201).json(tempUser);
 });
 
 //LOGIN
 app.post('/login', function(req, res){
   console.log("login req.body-",req.body);
-  db.User.findOne({email: req.body.email}, function(err, foundUser){
-    req.login(foundUser);
-
+  db.User.findOne({email: req.body.email}, function(err, user){
+    req.login(user);
+    res.json(user);
   });
 });
 

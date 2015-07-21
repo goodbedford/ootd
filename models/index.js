@@ -1,6 +1,6 @@
 var mongoose = require('mongoose'),
-    LookSchema = require('./look.js'),
-    Look = require('./look.js');
+    //LookSchema = require('./look'),
+    Look = require('./look'), 
     User = require('./user');
 
 
@@ -9,5 +9,5 @@ var mongoose = require('mongoose'),
 
 
     module.exports.Look = Look;
-    module.exports.LookSchema = LookSchema;
+    //module.exports.LookSchema = LookSchema;
     module.exports.User = User;

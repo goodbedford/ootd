@@ -62,26 +62,44 @@ $(document).ready(function(){
   //Favorites
 
   //Favs ALL
-  $("#looks-container").on("click", ".btn-all", function(e){
-    //e.preventDefault();
-    //console.log("this-", $(this) );
-    //console.log("this is btn all clicked");
-    var $iconRow = $(this).parent().parent();
-    //console.log("the iconRow", $iconRow.html() );
-    var $img = $iconRow.prev(".row-looks").find("section img");
-    console.log("the selected img", $img.attr("src") );
-    var favAll = {url: $img.attr("src")};
-    var userId = "";
-    $.ajax({
-      url: "/api/users/" + userId + "/favs/all",
-      type: 'POST',
-      data: favAll,
-      success: function(data){
-        console.log("this post was add", data);
-      }
+  function setLooksContainer(user) {
+    //favs-all
+    $("#looks-container").on("click", ".btn-all", function(e){
+      //e.preventDefault();
+      console.log("this in looks container click-",$(this))
+      var $iconRow = $(this).parent().parent();
+      //console.log("the iconRow", $iconRow.html() );
+      var $img = $iconRow.prev(".row-looks").find("section img");
+      console.log("the selected img", $img.attr("src") );
+      var favAll = {url: $img.attr("src")};
+      $.ajax({
+        url: "/api/users/" + user._id + "/favs/all",
+        type: "POST",
+        data: favAll,
+        success: function(data){
+          console.log("this post was add", data);
+        }
+      });
+    });
+
+    //Fav Click
+    $("#fav-grid-btn").on("click", function(e){
+
+      $.ajax({
+        user: "/api/users/" + user._id + "/favs/all",
+        type: "GET",
+        success: function(data){
+        _.each(data.data, function(look){
+ 
+          var $look = gTemplate(look);
+          $("#looks-container").append($look);
+        });
+        }
+      });
 
     });
-  });
+  }
+  
   //Sign Up
   $("#sign-up-btn").on("click", function(){
     console.log("I clicked sign-up-btn");
@@ -111,7 +129,7 @@ $(document).ready(function(){
       type: "POST",
       data: tempUser,
       success: function(data){
-
+        setLooksContainer(data);
         console.log("return user-", data);
       }
     });
@@ -136,24 +154,28 @@ $(document).ready(function(){
   });
 
   //Login submit
-  $("#submit-login-btn").on("click", function(){
+  $("#submit-login-btn").on("click", function(e){
     e.preventDefault();
     console.log("I submitted login")
     var tempUser = {};
-        tempUser.email = $("#login-up-email").val();
-        tempUser.password = $("#login-up-password").val();
+        tempUser.email = $("#login-email").val();
+        tempUser.password = $("#login-password").val();
     console.log(tempUser);
-
+    $("div.row-login").slideUp("slow");
     $.ajax({
       url: "/login",
       type: "POST",
       data: tempUser,
       success: function(data){
         console.log(data);
+        setLooksContainer(data) 
       }
-    });
+    }); 
+    $("#form-login").trigger("reset");
 
   });
+
+
 
   function imgExtractor( obj ){
     var tempImg = {};

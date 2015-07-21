@@ -10,5 +10,5 @@ var LookSchema = new Schema({
 var Look = mongoose.model('Look', LookSchema);
 
 
-module.exports.LookSchema = LookSchema;
-module.exports.Look = Look;
+//module.exports.LookSchema = LookSchema;
+module.exports = Look;
