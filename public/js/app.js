@@ -8,7 +8,6 @@ $(document).ready(function(){
 
   //load page with looks
   getLooks();
-  $('body').scrollspy({ target: '#spy-target' });
 
   var looks =[
       { url: "http://topmodafemei.ro/wp-content/uploads/2014/08/outfit6.png",
@@ -24,21 +23,6 @@ $(document).ready(function(){
         createdDate: new Date()
       }
   ]
-
-  // _.each(looks, function(look){
-  //   console.log(look);
-  //   var $look = template(look);
-  //   $("#looks-container").append($look);
-  // });
-
-  // function gridRender(){
-  //   $(".row-grid-icons").removeClass("hide");
-  //   _.each(looks, function(look){
-  //     console.log(look);
-  //     var $look = gTemplate(look);
-  //     $("#looks-container").append($look);
-  //   });
-  // } 
 
   //GET looks
   function getLooks(){
@@ -64,18 +48,14 @@ $(document).ready(function(){
 
   //Favs ALL
   function setLooksContainer(user) {
-    $('[data-spy="scroll"]').each(function () {
-      var $spy = $(this).scrollspy('refresh')
-    });
-
     //favs-all
     $("#looks-container").on("click", ".btn-all", function(e){
       //e.preventDefault();
-      console.log("this in looks container click-",$(this))
+      //console.log("this in looks container click-",$(this))
       var $iconRow = $(this).parent().parent();
       //console.log("the iconRow", $iconRow.html() );
       var $img = $iconRow.prev(".row-looks").find("section img");
-      console.log("the selected img", $img.attr("src") );
+      //console.log("the selected img", $img.attr("src") );
       var favAll = {url: $img.attr("src")};
       $.ajax({
         url: "/api/users/" + user._id + "/favs/all",
@@ -89,11 +69,11 @@ $(document).ready(function(){
     //favs-tops
     $("#looks-container").on("click", ".btn-tops", function(e){
       //e.preventDefault();
-      console.log("this in looks container click-",$(this))
+      //console.log("this in looks container click-",$(this))
       var $iconRow = $(this).parent().parent();
       //console.log("the iconRow", $iconRow.html() );
       var $img = $iconRow.prev(".row-looks").find("section img");
-      console.log("the selected img", $img.attr("src") );
+      //console.log("the selected img", $img.attr("src") );
       var favTops = {url: $img.attr("src")};
       $.ajax({
         url: "/api/users/" + user._id + "/favs/tops",
@@ -107,11 +87,11 @@ $(document).ready(function(){
     //favs-legs
     $("#looks-container").on("click", ".btn-legs", function(e){
       //e.preventDefault();
-      console.log("this in looks container click-",$(this))
+      //console.log("this in looks container click-",$(this))
       var $iconRow = $(this).parent().parent();
       //console.log("the iconRow", $iconRow.html() );
       var $img = $iconRow.prev(".row-looks").find("section img");
-      console.log("the selected img", $img.attr("src") );
+      //console.log("the selected img", $img.attr("src") );
       var favLegs = {url: $img.attr("src")};
       $.ajax({
         url: "/api/users/" + user._id + "/favs/legs",
@@ -147,7 +127,7 @@ $(document).ready(function(){
       var $iconRow = $(this).parent().parent();
       //console.log("the iconRow", $iconRow.html() );
       var $img = $iconRow.prev(".row-looks").find("section img");
-      console.log("the selected img", $img.attr("src") );
+      //console.log("the selected img", $img.attr("src") );
       var favPieces = {url: $img.attr("src")};
       $.ajax({
         url: "/api/users/" + user._id + "/favs/pieces",
@@ -161,22 +141,25 @@ $(document).ready(function(){
     //Fav Click
     $("#fav-grid-btn").on("click", function(e){
       console.log("i clicked fav btn", user._id);
-      if($("#grid-container").hasClass("grid-active") ){
-                getLooks();
-      }
       $("#grid-container").toggleClass("hide").toggleClass("grid-active");
-      // $("#grid-container").toggleClass("hide").addClass("grid-active");
-      $("#looks-container").toggleClass("hide").empty();
+      $("#looks-container").toggleClass("hide");
+
+      if($("#grid-container").hasClass("grid-active") ){
+       $("#fav-all-container").empty();
+       $("#fav-tops-container").empty();
+       $("#fav-legs-container").empty();
+       $("#fav-shoes-container").empty();
+       $("#fav-pieces-container").empty();
       //add all favs to view
       $.ajax({
         url: "/api/users/" + user._id + "/favs/all",
         type: "GET",
         success: function(data){
-          console.log("the data is", data);
+          //console.log("the data is", data);
           _.each(data.fav_all, function(look){
-            console.log("inside each grid");
+            //console.log("inside each grid look: ", look);
             var $look = gTemplate(look);
-            $("#fav-all-container").append($look);
+            $("#fav-all-container").prepend($look);
           });
         }
       });
@@ -189,7 +172,7 @@ $(document).ready(function(){
           _.each(data.fav_tops, function(look){
             console.log("inside each grid");
             var $look = gTemplate(look);
-            $("#fav-tops-container").append($look);
+            $("#fav-tops-container").prepend($look);
           });
         }
       });
@@ -198,11 +181,11 @@ $(document).ready(function(){
         url: "/api/users/" + user._id + "/favs/legs",
         type: "GET",
         success: function(data){
-          console.log("the legs data is", data);
+          //console.log("the legs data is", data);
           _.each(data.fav_legs, function(look){
-            console.log("inside each grid");
+            //console.log("inside each grid");
             var $look = gTemplate(look);
-            $("#fav-legs-container").append($look);
+            $("#fav-legs-container").prepend($look);
           });
         }
       });
@@ -215,7 +198,7 @@ $(document).ready(function(){
           _.each(data.fav_shoes, function(look){
             console.log("inside each grid");
             var $look = gTemplate(look);
-            $("#fav-shoes-container").append($look);
+            $("#fav-shoes-container").prepend($look);
           });
         }
       });
@@ -224,14 +207,52 @@ $(document).ready(function(){
         url: "/api/users/" + user._id + "/favs/pieces",
         type: "GET",
         success: function(data){
-          console.log("the pieces data is", data);
+          //console.log("the pieces data is", data);
           _.each(data.fav_pieces, function(look){
             console.log("inside each grid");
             var $look = gTemplate(look);
-            $("#fav-pieces-container").append($look);
+            $("#fav-pieces-container").prepend($look);
           });
         }
       });
+      } else{
+        getLooks();
+      }
+    });
+
+    //Delete Grid images if user is login in
+    $("div.row-looks-container").on("click", "span.delete-img", function(e){
+      var lookId = $(this).attr("data-index");
+      var tag = $(this).attr("data-type");
+      var url = $(this).prev("img").attr("src");
+      var updateUser = {
+          type:tag,
+          userId: user._id,
+          lookId:lookId
+          };
+      //send id to db for deleting
+      deleteFromUser();
+      deleteFromLook();
+      function deleteFromUser(){
+        $.ajax({
+          url: "/api/users/" + user._id + "/favs/" + tag,
+          type: "PUT",
+          data: updateUser,
+          success: function(data){
+            console.log("returned data from delete from user: ",data);
+          }
+        });
+      }
+      //console.log("the delete lookId: ", lookId);
+      function deleteFromLook(){
+        $.ajax({
+          url: "/api/looks/" + lookId,
+          type: "DELETE",
+          success: function(data){
+            console.log("returned data from delete: ", data);
+          }
+        });
+      }
     });
   }
   //Guest Sign in
@@ -252,8 +273,7 @@ $(document).ready(function(){
         $("#currentUser").text("Username: " + data.username); 
       }
     });
-  })
-
+  });
 
   //Sign Up
   $("#sign-up-btn").on("click", function(){
@@ -290,7 +310,7 @@ $(document).ready(function(){
     });
  
     $("#form-sign-up").trigger("reset");
-
+    $("#sign-up-btn").trigger("click");
   });
 
   //Login
@@ -330,7 +350,7 @@ $(document).ready(function(){
   });
 
 
-
+// Helper function
   function imgExtractor( obj ){
     var tempImg = {};
     tempImg.url = obj.images.low_resolution.url;

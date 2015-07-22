@@ -60,14 +60,12 @@
           <div id="looks-container" class="col-xs-12 looks-container">
           </div>
           <div id="grid-container" class="col-xs-12 looks-container hide">
-            <div id="spy-target" class="fixed-top">
-              <div class="nav">
+            <div id="" class="fixed-top">
                 <a href="#outfits" class="a-tags">Outfits</a>
                 <a href="#tops" class="a-tags">Tops</a>
                 <a href="#legs" class="a-tags">Legs</a>
                 <a href="#shoes" class="a-tags">Shoes</a>
                 <a href="#pieces" class="a-tags">Pieces</a>
-              </div>
             </div>
             <h3 class="col-xs-12 top-pad-7 fav-header"><a id="outfits" >Favorite Outfits</a></h3>
             <div id="fav-all-container"></div>
@@ -127,6 +125,7 @@
   <script type="text/template" id="grid-template">
     <div class="col-xs-4">
       <img src="<%= url %>" alt="outfit logo" class="img-responsive grid-img">
+      <span class="red delete-img" data-index="<%= _id %>" data-type="<%= type %>">&nbspX&nbsp</span>
     </div>
   </script> 
 

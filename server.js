@@ -1,13 +1,13 @@
 
 var express = require("express"),
     cors = require("cors"),
-    app = express(),
     bodyParser = require("body-parser"),
     mongoose = require('mongoose'),
     session = require('express-session'),
     db = require('./models/index.js'),
     _ = require("underscore"),
     request = require('request'),
+    app = express(),
     corsOptions = {
           origin: 'http://localhost:3000'
     };
@@ -44,14 +44,14 @@ app.use(session({
   saveUninitialized: true,
   resave: true,
   secret: 'OurSuperSecretCookieSecret',
-  cookie: { maxAge: 60000 }
+  cookie: { maxAge: 600000 }
 
 }));
 
 app.use('/', function(req, res, next){
   //save userId in session for logged in user
   req.login = function(user){
-    req.session.userId = user.id;
+    req.session.userId = user._id;
   };
 
   //find current logged in user based on session.userId
@@ -62,7 +62,7 @@ app.use('/', function(req, res, next){
   //   });
   // };
 
-  //destro session.userId
+  //destroy session.userId
   req.logout = function(){
     req.session.userId = null;
     req.user = null;
@@ -87,6 +87,11 @@ app.use('/', function(req, res, next){
 // });
 
 app.get('/', function(req, res){
+
+  if( req.session.userId){
+    console.log("the req sessions");
+  }
+
   res.sendFile(__dirname + '/public/views/index.html');
 })
 
@@ -96,6 +101,13 @@ app.get('/', function(req, res){
 //   });
 // });
 
+//Delete All LOOKS /api/looks/:id
+app.delete('/api/looks/:id', function(req, res){
+  db.Look.remove({_id: req.params.id}, function(err, look){
+    console.log("removed look: ", look);
+      res.send("removed look: ");
+  });
+});
 //GET ALL LOOKS /api/users/:id/favs/all
 app.get('/api/users/:id/favs/all', function(req, res){
   console.log("the req params-", req.params.id);
@@ -108,7 +120,7 @@ app.get('/api/users/:id/favs/all', function(req, res){
 //POST ALL LOOKS /api/users/:id/favs/all
 app.post('/api/users/:id/favs/all', function(req, res){
   //console.log("the looks body Id", req.params.id);
-  var look = new db.Look({url:req.body.url});
+  var look = new db.Look({url:req.body.url, type:"all"});
   //console.log("this is the look--", look);
   look.save(function(err, look){
     db.User.findOne({_id: req.params.id}, function(err, user){
@@ -119,11 +131,40 @@ app.post('/api/users/:id/favs/all', function(req, res){
     });
   });
 });
+//PUT ALL LOOKS /api/users/:id/favs/all
+app.put('/api/users/:id/favs/all', function(req, res){
+    db.User.findOne({_id: req.params.id}, function(err, user){
+      var lookId = req.body.lookId;
+      var favIndex;
+      _.each(user.fav_all, function(look){
+        console.log("look id in update: ", lookId);
+        if( look == lookId){
+          favIndex =  user.fav_all.indexOf(look);
+          console.log("favIndex in update: ", favIndex)
+          user.fav_all.splice(favIndex, 1);
+        }
+      });
+      user.save(function(err, user){
+        console.log("updated user: ", user);
+       res.json(user);  
+      });
+  });
+});
 
-//POST TOPSLOOKS /api/users/:id/favs/tops
+
+
+//GET TOPS /api/users/:id/favs/tops'
+app.get('/api/users/:id/favs/tops', function(req, res){
+  console.log("the req params-", req.params.id);
+  db.User.findOne({_id: req.params.id}).populate('fav_tops').exec(function(err, user){
+    console.log("server get user id fav tops",user);
+    res.json(user);
+  });
+});
+//POST TOPS LOOKS /api/users/:id/favs/tops
 app.post('/api/users/:id/favs/tops', function(req, res){
   //console.log("the looks body Id", req.params.id);
-  var look = new db.Look({url:req.body.url});
+  var look = new db.Look({url:req.body.url, type:"tops"});
   //console.log("this is the look--", look);
   look.save(function(err, look){
     db.User.findOne({_id: req.params.id}, function(err, user){
@@ -134,20 +175,38 @@ app.post('/api/users/:id/favs/tops', function(req, res){
     });
   });
 });
-
-//GET TOPS /api/users/:id/favs/tops'
-app.get('/api/users/:id/favs/tops', function(req, res){
-  console.log("the req params-", req.params.id);
-  db.User.findOne({_id: req.params.id}).populate('fav_tops').exec(function(err, user){
-    console.log("server get user id fav tops",user);
-    res.json(user);
+//PUT TOPS LOOKS /api/users/:id/favs/tops
+app.put('/api/users/:id/favs/tops', function(req, res){
+    db.User.findOne({_id: req.params.id}, function(err, user){
+      var lookId = req.body.lookId;
+      var favIndex;
+      _.each(user.fav_tops, function(look){
+        console.log("look id in update: ", lookId);
+        if( look == lookId){
+          favIndex =  user.fav_tops.indexOf(look);
+          console.log("favIndex in update: ", favIndex)
+          user.fav_tops.splice(favIndex, 1);
+        }
+      });
+      user.save(function(err, user){
+        console.log("updated user: ", user);
+       res.json(user);  
+      });
   });
 });
 
+//GET LEGS /api/users/:id/favs/legs'
+app.get('/api/users/:id/favs/legs', function(req, res){
+  //console.log("the req params-", req.params.id);
+  db.User.findOne({_id: req.params.id}).populate('fav_legs').exec(function(err, user){
+    console.log("server get user id fav legs",user);
+    res.json(user);
+  });
+});
 //POST LEGS LOOK /api/users/:id/favs/legs
 app.post('/api/users/:id/favs/legs', function(req, res){
-  //console.log("the legs looks body Id", req.params.id);
-  var look = new db.Look({url:req.body.url});
+  console.log("the legs looks body Id", req.params.id);
+  var look = new db.Look({url:req.body.url, type:"legs"});
   //console.log("this is the look--", look);
   look.save(function(err, look){
     db.User.findOne({_id: req.params.id}, function(err, user){
@@ -158,18 +217,37 @@ app.post('/api/users/:id/favs/legs', function(req, res){
     });
   });
 });
-//GET LEGS /api/users/:id/favs/legs'
-app.get('/api/users/:id/favs/legs', function(req, res){
+//PUT LEGS LOOKS /api/users/:id/favs/legs
+app.put('/api/users/:id/favs/legs', function(req, res){
+    db.User.findOne({_id: req.params.id}, function(err, user){
+      var lookId = req.body.lookId;
+      var favIndex;
+      _.each(user.fav_legs, function(look){
+        console.log("look id in update: ", lookId);
+        if( look == lookId){
+          favIndex =  user.fav_legs.indexOf(look);
+          console.log("favIndex in update: ", favIndex)
+          user.fav_legs.splice(favIndex, 1);
+        }
+      });
+      user.save(function(err, user){
+        console.log("updated user: ", user);
+       res.json(user);  
+      });
+  });
+});
+//GET SHOES /api/users/:id/favs/shoes'
+app.get('/api/users/:id/favs/shoes', function(req, res){
   console.log("the req params-", req.params.id);
-  db.User.findOne({_id: req.params.id}).populate('fav_legs').exec(function(err, user){
-    console.log("server get user id fav legs",user);
+  db.User.findOne({_id: req.params.id}).populate('fav_shoes').exec(function(err, user){
+    console.log("server get user id fav shoes",user);
     res.json(user);
   });
 });
-//POST Shoes LOOK /api/users/:id/favs/shoes
+//POST SHOES LOOK /api/users/:id/favs/shoes
 app.post('/api/users/:id/favs/shoes', function(req, res){
   //console.log("the shoes looks body Id", req.params.id);
-  var look = new db.Look({url:req.body.url});
+  var look = new db.Look({url:req.body.url, type: "shoes"});
   //console.log("this is the look--", look);
   look.save(function(err, look){
     db.User.findOne({_id: req.params.id}, function(err, user){
@@ -180,18 +258,19 @@ app.post('/api/users/:id/favs/shoes', function(req, res){
     });
   });
 });
-//GET Shoes /api/users/:id/favs/shoes'
-app.get('/api/users/:id/favs/shoes', function(req, res){
+
+//GET Pieces /api/users/:id/favs/pieces'
+app.get('/api/users/:id/favs/pieces', function(req, res){
   console.log("the req params-", req.params.id);
-  db.User.findOne({_id: req.params.id}).populate('fav_shoes').exec(function(err, user){
-    console.log("server get user id fav shoes",user);
+  db.User.findOne({_id: req.params.id}).populate('fav_pieces').exec(function(err, user){
+    console.log("server get user id fav pieces",user);
     res.json(user);
   });
 });
 //POST Pieces LOOK /api/users/:id/favs/pieces
 app.post('/api/users/:id/favs/pieces', function(req, res){
   //console.log("the pieces looks body Id", req.params.id);
-  var look = new db.Look({url:req.body.url});
+  var look = new db.Look({url:req.body.url, type: "pieces"});
   //console.log("this is the look--", look);
   look.save(function(err, look){
     db.User.findOne({_id: req.params.id}, function(err, user){
@@ -202,12 +281,23 @@ app.post('/api/users/:id/favs/pieces', function(req, res){
     });
   });
 });
-//GET Pieces /api/users/:id/favs/pieces'
-app.get('/api/users/:id/favs/pieces', function(req, res){
-  console.log("the req params-", req.params.id);
-  db.User.findOne({_id: req.params.id}).populate('fav_pieces').exec(function(err, user){
-    console.log("server get user id fav pieces",user);
-    res.json(user);
+//PUT PIECES LOOKS /api/users/:id/favs/pieces
+app.put('/api/users/:id/favs/pieces', function(req, res){
+    db.User.findOne({_id: req.params.id}, function(err, user){
+      var lookId = req.body.lookId;
+      var favIndex;
+      _.each(user.fav_pieces, function(look){
+        console.log("look id in update: ", lookId);
+        if( look == lookId){
+          favIndex =  user.fav_pieces.indexOf(look);
+          console.log("favIndex in update: ", favIndex)
+          user.fav_pieces.splice(favIndex, 1);
+        }
+      });
+      user.save(function(err, user){
+        console.log("updated user: ", user);
+       res.json(user);  
+      });
   });
 });
 
@@ -221,25 +311,41 @@ app.get('/api/users', function(req, res){
 //POST USER /api/users
 app.post('/api/users', function(req, res){
   console.log(req.body)
-  tempUser = new db.User({
-    email: req.body.email,
+
+  var tempUser = {
     username: req.body.username,
+    email: req.body.email,
     password: req.body.password
-  });
-  tempUser.save(function(err, user){
-    console.log("saved new user-", tempUser._id);
-    req.login(user);
-    res.status(201).json(user); 
-  });
+  }
+  db.User.createSecure( tempUser,
+    function (err, user){
+      res.send(user);
+    }
+  );
+  // tempUser = new db.User({
+  //   email: req.body.email,
+  //   username: req.body.username,
+  //   password: req.body.password
+  // });
+  // tempUser.save(function(err, user){
+  //   console.log("saved new user-", tempUser._id);
+  //   req.login(user);
+  //   res.status(201).json(user); 
+  // });
 });
 
 //POST LOGIN
 app.post('/login', function(req, res){
   console.log("login req.body-",req.body);
-  db.User.findOne({email: req.body.email}, function(err, user){
+
+  db.User.authenticate(req.body.email, req.body.password, function(err, user){
     req.login(user);
-    res.json(user);
+    res.send(user);
   });
+  // db.User.findOne({email: req.body.email}, function(err, user){
+  //   req.login(user);
+  //   res.json(user);
+  // });
 });
 
 

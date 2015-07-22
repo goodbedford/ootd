@@ -4,6 +4,7 @@ var mongoose = require('mongoose'),
 
 var LookSchema = new Schema({
   url: {type: String, default:"", required: true },
+  type: {type: String, default:"", required: true},
   createdDate: {type: Date, default: Date.now}
 });
 

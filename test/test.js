@@ -30,7 +30,16 @@ var testUser = new User({
 // });
 
 
-//POST
+//POST api/users
+describe("POST /api/users", function(){
+  it('should return statusCode 201', function(done){
+    request.post(baseUrl + "users/", {form: tempUser}, function(err, res, body){
+      console.log("Post api/users--body--", body);
+      done(); 
+    });
+  });
+});
+
 
 //POST
 describe("POST /api/users/:id/favs/all", function(){
