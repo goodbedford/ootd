@@ -1,10 +1,11 @@
 $(document).ready(function(){
-  $("div.row-header").nextUntil("div.row-looks-container").hide();
+  //$("div.row-header").nextUntil("div.row-looks-container").hide();
 
   var template = _.template($("#looks-template").html() );
   var gTemplate = _.template($("#grid-template").html() );
   var baseUrl = "http://localhost:3000/api/"
-
+  //hide collapsable
+  $("#fav-menu").hide();
 
   //load page with looks
   getLooks();
@@ -232,13 +233,14 @@ $(document).ready(function(){
       var tag = $(this).attr("data-type");
       var url = $(this).prev("img").attr("src");
       var updateUser = {
-          type:tag,
+          type:tag, 
           userId: user._id,
           lookId:lookId
           };
       //send id to db for deleting
       deleteFromUser();
       deleteFromLook();
+      $(this).parent().remove();
       function deleteFromUser(){
         $.ajax({
           url: "/api/users/" + user._id + "/favs/" + tag,
@@ -366,6 +368,10 @@ $(document).ready(function(){
     });
   });
 
+// Menue Collapse
+  $("#menu-collapse").on("click", function(){
+    $("#fav-menu").slideToggle("slow");
+  });
 // Helper function
   function imgExtractor( obj ){
     var tempImg = {};
@@ -379,9 +385,9 @@ $(document).ready(function(){
       type: 'GET',
       success: function(data){
         if( data == undefined){
-          $("#currentUser").text("Please Login |");
+          $("#currentUser").text("Please Login ");
         }else{
-          $("#currentUser").text("Logged in as: "+ data.username + " |");
+          $("#currentUser").text("Logged in as: "+ data.username );
         }
       }
     });

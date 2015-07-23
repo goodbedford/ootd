@@ -122,7 +122,6 @@ app.post('/api/users/:id', function(req, res){
 //POST LOGIN
 app.post('/login', function(req, res){
   console.log("login req.body-",req.body);
-
   db.User.authenticate(req.body.email, req.body.password, function(err, user){
     req.login(user);
     res.send(user);

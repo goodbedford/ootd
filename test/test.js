@@ -46,12 +46,21 @@ describe("POST /api/users", function(){
   });
 });
 
+//POST Login
+describe("POST /api/login", function(){
+  it('should return statusCode 200', function(done){
+    request.post(baseUrl + "login", {form:testUser}, function(err, res, body){
+      console.log("Login body:",body);
+      done();
+    });
+  });
+});
 
 
-//POST
+//POST /api/users/:id/favs/all
 describe("POST /api/users/:id/favs/all", function(){
   it('should return statusCode 201', function(done){
-    request.post(baseUrl + "users/"+ testUser._id + "/favs/all", function(err, res, body){
+    request.post(baseUrl + "users/"+ testUser._id + "/favs/all", {form: testLook}, function(err, res, body){
       testLook = body;
       console.log(body);
       done();
@@ -69,6 +78,7 @@ describe("PUT /api/users/:id/favs/all", function(){
   });
 });
 
+console.log("testUser._id:",testUser._id);
 //DELETE api/users
 describe("DELETE /api/users/:id", function(){
   it('should return statusCode 200', function(done){
