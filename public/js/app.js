@@ -10,7 +10,8 @@ $(document).ready(function(){
   //load page with looks
   getLooks();
   checkCurrentUser();
-
+  $("div.row-sign-up").hide();
+  $("div.row-login").hide()
   var looks =[
       { url: "http://topmodafemei.ro/wp-content/uploads/2014/08/outfit6.png",
         createdDate: new Date()
@@ -52,8 +53,9 @@ $(document).ready(function(){
     //check for current user
     checkCurrentUser();
     //favs-all
-    $("button.icon-btn").on("click", function(e){
+    $("#looks-container").on("click", "button.icon-btn", function(e){
       favActive(this);
+      //console.log("this button is:", this);   
     });
     $("#looks-container").on("click", ".btn-all", function(e){
       //e.preventDefault();
@@ -240,7 +242,7 @@ $(document).ready(function(){
       //send id to db for deleting
       deleteFromUser();
       deleteFromLook();
-      $(this).parent().remove();
+      $(this).parent().parent().remove();
       function deleteFromUser(){
         $.ajax({
           url: "/api/users/" + user._id + "/favs/" + tag,
@@ -287,14 +289,14 @@ $(document).ready(function(){
   $("#sign-up-btn").on("click", function(){
     console.log("I clicked sign-up-btn");
     if( $("div.row-login").hasClass("active-toggle") ){
-      $("div.row-login").removeClass("active-toggle").slideUp("slow");
-      $("div.row-sign-up").slideDown("slow").addClass("active-toggle");
+      $("div.row-login").removeClass("active-toggle").slideUp("fast");
+      $("div.row-sign-up").slideDown("fast").addClass("active-toggle");
 
     } else if( $("div.row-sign-up").hasClass("active-toggle") ){
-      $("div.row-sign-up").slideUp("slow").removeClass("active-toggle");
+      $("div.row-sign-up").slideUp("fast").removeClass("active-toggle");
     }else if( !$("div.row-sign-up").hasClass("active-toggle") && 
         !$("div.row-login").hasClass("active-toggle") ){
-        $("div.row-sign-up").slideDown("slow").addClass("active-toggle");
+        $("div.row-sign-up").slideDown("fast").addClass("active-toggle");
     }
   });
 
@@ -325,14 +327,14 @@ $(document).ready(function(){
   $("#login-btn").on("click", function(){
     console.log("I clicked login-btn");
     if( $("div.row-sign-up").hasClass("active-toggle") ){
-      $("div.row-sign-up").removeClass("active-toggle").slideUp("slow");
-      $("div.row-login").slideDown("slow").addClass("active-toggle");
+      $("div.row-sign-up").removeClass("active-toggle").slideUp("fast");
+      $("div.row-login").slideDown("fast").addClass("active-toggle");
 
     } else if( $("div.row-login").hasClass("active-toggle") ){
-      $("div.row-login").slideUp("slow").removeClass("active-toggle");
+      $("div.row-login").slideUp("fast").removeClass("active-toggle");
     }else if( !$("div.row-sign-up").hasClass("active-toggle") && 
               !$("div.row-login").hasClass("active-toggle") ){
-              $("div.row-login").slideDown("slow").addClass("active-toggle");
+              $("div.row-login").slideDown("fast").addClass("active-toggle");
     }
   });
 
@@ -344,7 +346,7 @@ $(document).ready(function(){
         tempUser.email = $("#login-email").val();
         tempUser.password = $("#login-password").val();
     console.log(tempUser);
-    $("div.row-login").slideUp("slow");
+    $("div.row-login").slideUp("fast");
     $.ajax({
       url: "/login",
       type: "POST",
@@ -368,10 +370,19 @@ $(document).ready(function(){
     });
   });
 
-// Menue Collapse
+// Menu Collapse
   $("#menu-collapse").on("click", function(){
     $("#fav-menu").slideToggle("slow");
+    $(this).removeClass("glyphicon-plus").addClass("glyphicon-minus");
   });
+// Current Tab
+
+// More Outfits
+$("#fav-more-btn").on("click", moreOutfits);
+
+function moreOutfits(){
+  getLooks();
+}
 // Helper function
   function imgExtractor( obj ){
     var tempImg = {};
@@ -394,6 +405,11 @@ $(document).ready(function(){
   } 
   function favActive(btn){
     $(btn).addClass("fav-active");
+    $(btn).on("mouseout", function(){
+      $(this).focusout();
+    })
+    
+    //console.log("in fav act func", $(btn) );
   }
 });
 
