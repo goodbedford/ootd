@@ -8,6 +8,7 @@ $(document).ready(function(){
 
   //load page with looks
   getLooks();
+  checkCurrentUser();
 
   var looks =[
       { url: "http://topmodafemei.ro/wp-content/uploads/2014/08/outfit6.png",
@@ -27,7 +28,6 @@ $(document).ready(function(){
   //GET looks
   function getLooks(){
     $.ajax({
-      //url: baseUrl +"looks",
       //url: "/api/looks",
       url: "https://api.instagram.com/v1/tags/ootd/media/recent?client_id=6f1ace0e97194e09adbe7c7740d51531",
       type: "GET",
@@ -48,10 +48,16 @@ $(document).ready(function(){
 
   //Favs ALL
   function setLooksContainer(user) {
+    //check for current user
+    checkCurrentUser();
     //favs-all
+    $("button.icon-btn").on("click", function(e){
+      favActive(this);
+    });
     $("#looks-container").on("click", ".btn-all", function(e){
       //e.preventDefault();
       //console.log("this in looks container click-",$(this))
+      // $(this).addClass("fav-active");
       var $iconRow = $(this).parent().parent();
       //console.log("the iconRow", $iconRow.html() );
       var $img = $iconRow.prev(".row-looks").find("section img");
@@ -123,7 +129,7 @@ $(document).ready(function(){
     //favs-pieces
     $("#looks-container").on("click", ".btn-pieces", function(e){
       //e.preventDefault();
-      console.log("this in looks container click-",$(this))
+      //console.log("this in looks container click-",$(this))
       var $iconRow = $(this).parent().parent();
       //console.log("the iconRow", $iconRow.html() );
       var $img = $iconRow.prev(".row-looks").find("section img");
@@ -150,72 +156,72 @@ $(document).ready(function(){
        $("#fav-legs-container").empty();
        $("#fav-shoes-container").empty();
        $("#fav-pieces-container").empty();
-      //add all favs to view
-      $.ajax({
-        url: "/api/users/" + user._id + "/favs/all",
-        type: "GET",
-        success: function(data){
-          //console.log("the data is", data);
-          _.each(data.fav_all, function(look){
-            //console.log("inside each grid look: ", look);
-            var $look = gTemplate(look);
-            $("#fav-all-container").prepend($look);
-          });
-        }
-      });
-      //add all tops to view
-      $.ajax({
-        url: "/api/users/" + user._id + "/favs/tops",
-        type: "GET",
-        success: function(data){
-          console.log("the tops data is", data);
-          _.each(data.fav_tops, function(look){
-            console.log("inside each grid");
-            var $look = gTemplate(look);
-            $("#fav-tops-container").prepend($look);
-          });
-        }
-      });
-      // all legs to view
-      $.ajax({
-        url: "/api/users/" + user._id + "/favs/legs",
-        type: "GET",
-        success: function(data){
-          //console.log("the legs data is", data);
-          _.each(data.fav_legs, function(look){
-            //console.log("inside each grid");
-            var $look = gTemplate(look);
-            $("#fav-legs-container").prepend($look);
-          });
-        }
-      });
-      // all shoes to view
-      $.ajax({
-        url: "/api/users/" + user._id + "/favs/shoes",
-        type: "GET",
-        success: function(data){
-          console.log("the shoes data is", data);
-          _.each(data.fav_shoes, function(look){
-            console.log("inside each grid");
-            var $look = gTemplate(look);
-            $("#fav-shoes-container").prepend($look);
-          });
-        }
-      });
-      // all pieces to view
-      $.ajax({
-        url: "/api/users/" + user._id + "/favs/pieces",
-        type: "GET",
-        success: function(data){
-          //console.log("the pieces data is", data);
-          _.each(data.fav_pieces, function(look){
-            console.log("inside each grid");
-            var $look = gTemplate(look);
-            $("#fav-pieces-container").prepend($look);
-          });
-        }
-      });
-      } else{
+        //add all favs to view
+        $.ajax({
+          url: "/api/users/" + user._id + "/favs/all",
+          type: "GET",
+          success: function(data){
+            //console.log("the data is", data);
+            _.each(data.fav_all, function(look){
+              //console.log("inside each grid look: ", look);
+              var $look = gTemplate(look);
+              $("#fav-all-container").prepend($look);
+            });
+          }
+        });
+        //add all tops to view
+        $.ajax({
+          url: "/api/users/" + user._id + "/favs/tops",
+          type: "GET",
+          success: function(data){
+            console.log("the tops data is", data);
+            _.each(data.fav_tops, function(look){
+              console.log("inside each grid");
+              var $look = gTemplate(look);
+              $("#fav-tops-container").prepend($look);
+            });
+          }
+        });
+        // all legs to view
+        $.ajax({
+          url: "/api/users/" + user._id + "/favs/legs",
+          type: "GET",
+          success: function(data){
+            //console.log("the legs data is", data);
+            _.each(data.fav_legs, function(look){
+              //console.log("inside each grid");
+              var $look = gTemplate(look);
+              $("#fav-legs-container").prepend($look);
+            });
+          }
+        });
+        // all shoes to view
+        $.ajax({
+          url: "/api/users/" + user._id + "/favs/shoes",
+          type: "GET",
+          success: function(data){
+            console.log("the shoes data is", data);
+            _.each(data.fav_shoes, function(look){
+              console.log("inside each grid");
+              var $look = gTemplate(look);
+              $("#fav-shoes-container").prepend($look);
+            });
+          }
+        });
+        // all pieces to view
+        $.ajax({
+          url: "/api/users/" + user._id + "/favs/pieces",
+          type: "GET",
+          success: function(data){
+            //console.log("the pieces data is", data);
+            _.each(data.fav_pieces, function(look){
+              console.log("inside each grid");
+              var $look = gTemplate(look);
+              $("#fav-pieces-container").prepend($look);
+            });
+          }
+        });
+      } else {
         getLooks();
       }
     });
@@ -258,11 +264,11 @@ $(document).ready(function(){
   //Guest Sign in
   $("#guest-btn").on("click", function(e){
     e.preventDefault();
-    console.log("I logged in as guest");
+    //console.log("I logged in as guest");
     var tempUser = {};
         tempUser.email = "test@gmail.com";
         tempUser.password = "test";
-    console.log(tempUser);
+    //console.log(tempUser);
     $.ajax({
       url: "/login",
       type: "POST",
@@ -270,7 +276,7 @@ $(document).ready(function(){
       success: function(data){
         console.log(data);
         setLooksContainer(data);
-        $("#currentUser").text("Username: " + data.username); 
+        //$("#currentUser").text("Username: " + data.username); 
       }
     });
   });
@@ -348,15 +354,40 @@ $(document).ready(function(){
     }); 
     $("#form-login").trigger("reset");
   });
-
+  //Logout 
+  $("#logout-btn").on("click", function(e){
+    $.ajax({
+      url: "/logout",
+      type: "GET",
+      success: function(data){
+        console.log(data);
+        checkCurrentUser();
+      }
+    });
+  });
 
 // Helper function
   function imgExtractor( obj ){
     var tempImg = {};
-    tempImg.url = obj.images.low_resolution.url;
-    //tempImg.url = obj.images.standard_resolution.url; 
-
+    //tempImg.url = obj.images.low_resolution.url;
+    tempImg.url = obj.images.standard_resolution.url; 
     return tempImg;
+  }
+  function checkCurrentUser(){
+    $.ajax({
+      url: "/api/current",
+      type: 'GET',
+      success: function(data){
+        if( data == undefined){
+          $("#currentUser").text("Please Login |");
+        }else{
+          $("#currentUser").text("Logged in as: "+ data.username + " |");
+        }
+      }
+    });
+  } 
+  function favActive(btn){
+    $(btn).addClass("fav-active");
   }
 });
 

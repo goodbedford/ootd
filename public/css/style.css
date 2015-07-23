@@ -78,7 +78,9 @@ body{
   text-decoration: none;
   color:white;
 }
-
+button.fav-active{
+ background-color: orange;
+}
 .fixed-top{
   position: fixed;
   background-color: white;

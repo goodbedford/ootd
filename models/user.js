@@ -41,7 +41,8 @@ UserSchema.statics.authenticate = function(email, password, callback){
   this.findOne({email:email}, function(err, user){
 
     if (user === null){
-      throw new Error('Can\'t find user with email-' + email);
+      callback("error: No email", null)
+      //throw new Error('Can\'t find user with email-' + email);
     } else if (user.checkPassword(password) ){
       callback(null, user);
     }

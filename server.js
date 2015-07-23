@@ -7,6 +7,7 @@ var express = require("express"),
     db = require('./models/index.js'),
     _ = require("underscore"),
     request = require('request'),
+    config = require('./config'),
     app = express(),
     corsOptions = {
           origin: 'http://localhost:3000'
@@ -43,63 +44,90 @@ app.use(cors({credentials: true, origin: true}));
 app.use(session({
   saveUninitialized: true,
   resave: true,
-  secret: 'OurSuperSecretCookieSecret',
-  cookie: { maxAge: 600000 }
+  secret: "OurSuperSecretCookieSecret",
+  cookie: { maxAge: 60000 }
 
-}));
+}));  
 
 app.use('/', function(req, res, next){
   //save userId in session for logged in user
   req.login = function(user){
+    console.log("userId_: ",user._id)
+    console.log("user.id: ",user.id)
+
     req.session.userId = user._id;
+    console.log("sess.userId:", req.session.userId)
   };
 
   //find current logged in user based on session.userId
-  // req.currentUser = function (callback) {
-  //   db.User.findOne({_id: req.session.userId}, function(err, user) {
-  //     req.user = user;
-  //     callback(null, user);
-  //   });
-  // };
+  req.currentUser = function (callback) {
+    db.User.findOne({_id: req.session.userId}, function(err, user) {
+      req.user = user;
+      callback(null, user);
+    });
+  };
 
   //destroy session.userId
   req.logout = function(){
     req.session.userId = null;
     req.user = null;
-  };
+  };  
 
   next();
 });
 
-
-
-
-// app.use(function(req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "*");
-//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//   next();
-// });
-
-// // fix use for local
-// app.all('/*', function(req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "*");
-//   next();
-// });
-
 app.get('/', function(req, res){
-
-  if( req.session.userId){
-    console.log("the req sessions");
-  }
-
   res.sendFile(__dirname + '/public/views/index.html');
 })
 
-//GET LOOKS /api/looks - from Instagram #ootd
-// app.get('/api/looks', function(req, res){
-//   request.get("https://api.instagram.com/v1/tags/ootd/media/recent?client_id=6f1ace0e97194e09adbe7c7740d51531", function(err, res, body){
-//   });
-// });
+//GET Current User
+app.get('/api/current', function(req, res){
+  req.currentUser(function(err, user){
+    res.json(user);
+  });
+});
+//GET Logout User
+app.get('/logout', function(req, res){
+  req.logout();
+  res.json("logged out");
+});
+//GET USERS
+app.get('/api/users', function(req, res){
+  db.User.find({}, function(err, user){
+    console.log("user sent", user);
+    res.json(user);
+  })
+})
+//POST USER /api/users
+app.post('/api/users', function(req, res){
+  //console.log(req.body)
+  var tempUser = {
+    username: req.body.username,
+    email: req.body.email,
+    password: req.body.password
+  }
+  db.User.createSecure( tempUser,
+    function (err, user){
+      res.send(user);
+    }
+  );
+});
+//DELETE USER /api/users/:id
+app.post('/api/users/:id', function(req, res){
+  db.User.find({_id: req.params.id}, function(err, user){
+    console.log("user deleted", user);
+    res.send("user was deleted:");
+  });
+});
+//POST LOGIN
+app.post('/login', function(req, res){
+  console.log("login req.body-",req.body);
+
+  db.User.authenticate(req.body.email, req.body.password, function(err, user){
+    req.login(user);
+    res.send(user);
+  });
+});
 
 //Delete All LOOKS /api/looks/:id
 app.delete('/api/looks/:id', function(req, res){
@@ -192,7 +220,7 @@ app.put('/api/users/:id/favs/tops', function(req, res){
         console.log("updated user: ", user);
        res.json(user);  
       });
-  });
+    });
 });
 
 //GET LEGS /api/users/:id/favs/legs'
@@ -301,52 +329,7 @@ app.put('/api/users/:id/favs/pieces', function(req, res){
   });
 });
 
-//GET USERS
-app.get('/api/users', function(req, res){
-  db.User.find({}, function(err, user){
-    console.log("user sent", user);
-    res.json(user);
-  })
-})
-//POST USER /api/users
-app.post('/api/users', function(req, res){
-  console.log(req.body)
 
-  var tempUser = {
-    username: req.body.username,
-    email: req.body.email,
-    password: req.body.password
-  }
-  db.User.createSecure( tempUser,
-    function (err, user){
-      res.send(user);
-    }
-  );
-  // tempUser = new db.User({
-  //   email: req.body.email,
-  //   username: req.body.username,
-  //   password: req.body.password
-  // });
-  // tempUser.save(function(err, user){
-  //   console.log("saved new user-", tempUser._id);
-  //   req.login(user);
-  //   res.status(201).json(user); 
-  // });
-});
-
-//POST LOGIN
-app.post('/login', function(req, res){
-  console.log("login req.body-",req.body);
-
-  db.User.authenticate(req.body.email, req.body.password, function(err, user){
-    req.login(user);
-    res.send(user);
-  });
-  // db.User.findOne({email: req.body.email}, function(err, user){
-  //   req.login(user);
-  //   res.json(user);
-  // });
-});
 
 
 
