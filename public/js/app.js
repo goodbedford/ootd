@@ -372,7 +372,7 @@ $(document).ready(function(){
 
 // Menu Collapse
   $("#menu-collapse").on("click", function(){
-    $("#fav-menu").slideToggle("slow");
+    $("#fav-menu").slideToggle("fast");
     $(this).removeClass("glyphicon-plus").addClass("glyphicon-minus");
   });
 // Current Tab

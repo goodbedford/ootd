@@ -4,31 +4,31 @@ var express = require('express'),
     expect = require('chai').expect,
     _ = require('underscore'),
     db = require('../models/index.js'),
-    baseUrl = "http://localhost:3000/api/";
+    baseUrl = 'http://localhost:3000/api/';
 
 
 
 var testUser =  {
-  email: "tester@gmail.com",
-  username: "two chains",
-  password: "test"
+  email: 'tester@gmail.com',
+  username: 'two chains',
+  password: 'test'
 };
 var testLook = {
-  url: "someImg.jpg",
-  type: "tops"
+  url: 'someImg.jpg',
+  type: 'tops'
 }
 
 
 // //GET LOOKS
-// describe("Get /api/looks", function(){
+// describe('Get /api/looks', function(){
 //   it('should return statusCode 200', function(done){
-//     request.get(baseUrl + "looks", function(err, res, body){
+//     request.get(baseUrl + 'looks', function(err, res, body){
 //       expect(res.statusCode).to.be.equal(200);
 //       _.each(body, function(look){
 //         console.log(look.url);
 //       });
 
-//       console.log("this is body",body);
+//       console.log('this is body',body);
 //       done();
 //     });
 //   });
@@ -36,21 +36,31 @@ var testLook = {
 
 
 //POST api/users
-describe("POST /api/users", function(){
+describe('POST /api/users', function(){
   it('should return statusCode 201', function(done){
-    request.post(baseUrl + "users/", {form: testUser}, function(err, res, body){
-      console.log("Post api/users--body--", body);
+    request.post(baseUrl + 'users/', {form: testUser}, function(err, res, body){
+      console.log('Post api/users--body--', body);
       testUser = body;
       done(); 
     });
   });
 });
 
-//POST Login
-describe("POST /api/login", function(){
+//GET api/logout
+decribe('GET api/logout', function(){
   it('should return statusCode 200', function(done){
-    request.post(baseUrl + "login", {form:testUser}, function(err, res, body){
-      console.log("Login body:",body);
+    request.get(baseUrl + 'logout', function(err, res, body){
+      console.log('GET logout-', body);
+      done();
+    });
+  });
+});
+
+//POST Login
+describe('POST /api/login', function(){
+  it('should return statusCode 200', function(done){
+    request.post(baseUrl + 'login', {form:testUser}, function(err, res, body){
+      console.log('Login body:',body);
       done();
     });
   });
@@ -58,9 +68,9 @@ describe("POST /api/login", function(){
 
 
 //POST /api/users/:id/favs/all
-describe("POST /api/users/:id/favs/all", function(){
+describe('POST /api/users/:id/favs/all', function(){
   it('should return statusCode 201', function(done){
-    request.post(baseUrl + "users/"+ testUser._id + "/favs/all", {form: testLook}, function(err, res, body){
+    request.post(baseUrl + 'users/'+ testUser._id + '/favs/all', {form: testLook}, function(err, res, body){
       testLook = body;
       console.log(body);
       done();
@@ -68,22 +78,29 @@ describe("POST /api/users/:id/favs/all", function(){
   });
 });
 //PUT
-describe("PUT /api/users/:id/favs/all", function(){
+describe('PUT /api/users/:id/favs/all', function(){
   it('should return statusCode 201', function(done){
-    request.post(baseUrl + "users/"+ testUser._id + "/favs/all", {form: testLook}, function(err, res, body){
-      
+    request.post(baseUrl + 'users/'+ testUser._id + '/favs/all', {form: testLook}, function(err, res, body){
       console.log(body);
       done();
     });
   });
 });
-
-console.log("testUser._id:",testUser._id);
+//DELETE LOOK
+describe('DELETE /api/looks/:id', function(){
+  it('should return statusCode 201', function(done) {
+    request.post(baseUrl + 'looks/' + testLook._id, function(err, res, body){
+      console.log(body);
+      done();
+    });
+  });
+});
+console.log('testUser._id:',testUser._id);
 //DELETE api/users
-describe("DELETE /api/users/:id", function(){
+describe('DELETE /api/users/:id', function(){
   it('should return statusCode 200', function(done){
-    request.post(baseUrl + "users/"+ testUser._id, function(err, res, body){
-      console.log("Post api/users--body--", body);
+    request.post(baseUrl + 'users/'+ testUser._id, function(err, res, body){
+      console.log('Post api/users--body--', body);
       done(); 
     });
   });
