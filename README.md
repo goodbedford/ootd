@@ -30,9 +30,17 @@ I had a lot of fun making this project and got to use the following tools.
 *CORS - cross origin 
 *UNDERSCORE - template/utilities
 *JQUERY - dom manipulation
+*BOOTSTRAP - css style guide
 *INSTAGRAM API - image api
 *HEROKU - cloud hosting 
-
+*SLACK - team communication application
+*Trello - project planning application
+*SUBLIME TEXT - text editor
+*MARKDOWN -  slick text to html converter syntax
+*NODE REPL - node read evaluate print loop
+*MEET UP: node school oakland - host in oakland http://nodeschool.io/oakland/
+*MEET UP: node school sf - hosted in sf 
+*MEET UP: html5 sf
 ------------------------------------------
 ##CORE REQUIREMENTS
 Express API Implement a server-side JSON API with Express.
