@@ -230,7 +230,7 @@ $(document).ready(function(){
     });
 
     //Delete Grid images if user is login in
-    $("div.row-looks-container").on("click", "span.delete-img", function(e){
+    $("div.row-looks-container").on("click", ".close-img", function(e){
       var lookId = $(this).attr("data-index");
       var tag = $(this).attr("data-type");
       var url = $(this).prev("img").attr("src");
@@ -242,7 +242,7 @@ $(document).ready(function(){
       //send id to db for deleting
       deleteFromUser();
       deleteFromLook();
-      $(this).parent().parent().remove();
+      $(this).parent().remove();
       function deleteFromUser(){
         $.ajax({
           url: "/api/users/" + user._id + "/favs/" + tag,
@@ -373,7 +373,7 @@ $(document).ready(function(){
 // Menu Collapse
   $("#menu-collapse").on("click", function(){
     $("#fav-menu").slideToggle("fast");
-    $(this).removeClass("glyphicon-plus").addClass("glyphicon-minus");
+    $(this).toggleClass("glyphicon-plus").toggleClass("glyphicon-minus");
   });
 // Current Tab
 

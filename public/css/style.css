@@ -42,6 +42,12 @@ a.a-tags{
 .a-header{
   color: #36B1BF;
 }
+#arrow{
+  position: fixed;
+  bottom: 2.8em;
+  right: 1.4em;
+  color: #4AD9D9;
+}
 .b-check{
   border:1px solid red;
   padding: 5px 50px
@@ -166,7 +172,9 @@ button.fav-btn:hover{
 .grid-img{
   
 }
-
+.glyphicon-arrow-up{
+  font-size: 2em;
+}
 .header {
   font-size: 1em;
   padding: 20px 0;
@@ -217,6 +225,7 @@ font-size: 1.5em;
 color: #F2385A;
 margin: 20px 0;
 }
+
 
 .top-pad-7{
   padding-top: 7px;
