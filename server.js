@@ -114,6 +114,7 @@ app.post('/login', function(req, res){
 
 //Delete All LOOKS /api/looks/:id
 app.delete('/api/looks/:id', function(req, res){
+  console.log("look params id:", req.params.id)
   db.Look.remove({_id: req.params.id}, function(err, look){
     console.log("removed look: ", look);
       res.send("removed look: ");
@@ -137,6 +138,8 @@ app.post('/api/users/:id/favs/all', function(req, res){
     db.User.findOne({_id: req.params.id}, function(err, user){
       user.fav_all.push(look._id);
       user.save(function(err, user){
+        console.log("the user is saved:", user);
+        console.log("the look is saved", look);
        res.status(201).json(user);  
       });
     });

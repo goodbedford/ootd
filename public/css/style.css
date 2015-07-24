@@ -1,25 +1,5 @@
+@import url(http://fonts.googleapis.com/css?family=Questrial);
 
-@media screen and (min-width:480) {
-
-}
-/*
-@media screen and (max-width:320px) {
-  .row-looks{
-    height: 294px;
-  }
-  div.looks-container{
-  overflow: scroll;
-  /*height: 353px;*/
-  /*height: 24.5em;
-  background-color: white;
-  }
-  .img-section{
-    /*height:300px;
-    height: 18.75em;
-  }
- .row-looks-container{
- }
-}
 */
 /*
 pink- #F2385A
@@ -50,7 +30,7 @@ a.a-tags{
   color: #4AD9D9;
   border:1px solid;
   padding: 0.5em;
-  border-radius: 45px;
+  border-radius: 45%;
 }
 .b-check{
   border:1px solid red;
@@ -59,6 +39,7 @@ a.a-tags{
 body{
   background-color: white;
   min-width: 320px;
+  font-family: 'Questrial', sans-serif;
 
 }
 
@@ -83,8 +64,8 @@ body{
   background-color: #F5A503;
   color: blue;
 }
-button.close-img a:hover{
-  background-color: yellow;
+button.close-img:hover{
+  border: 2px solid #F2385A; 
 }  
 button.fav-active{
  /*background-color: #F5A503;*/
@@ -106,11 +87,11 @@ button.icon-btn:focus {outline:none;}
   color: #F2385A;
 }
 .close-img{
-  border-radius: 45%;
-  border:none;
+  border: 2px solid #4AD9D9;
   background-color: #4AD9D9;
   position: relative;
-  bottom:3em;
+  bottom: 3em;
+  opacity: .5;
 }
 .collapse-btn{
   width: 100%;

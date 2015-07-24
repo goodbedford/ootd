@@ -40,7 +40,7 @@ describe('POST /api/users', function(){
   it('should return statusCode 201', function(done){
     request.post(baseUrl + 'users/', {form: testUser}, function(err, res, body){
       console.log('Post api/users--body--', body);
-      testUser = body;
+      testUser = JSON.parse(body);
       done(); 
     });
   });
@@ -53,14 +53,17 @@ describe('GET api/logout', function(){
       console.log('GET logout-', body);
       done();
     });
-  });
+  }); 
 });
 
 //POST Login
 describe('POST /api/login', function(){
+        console.log("testUser after post", testUser);
+
   it('should return statusCode 200', function(done){
     request.post(baseUrl + 'login', {form:testUser}, function(err, res, body){
       console.log('Login body:',body);
+      testUser = JSON.parse(body);
       done();
     });
   });
