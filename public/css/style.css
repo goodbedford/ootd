@@ -44,9 +44,13 @@ a.a-tags{
 }
 #arrow{
   position: fixed;
-  bottom: 2.8em;
-  right: 1.4em;
+  bottom: 3em;
+  right: 5em;
+  font-size: 1em;
   color: #4AD9D9;
+  border:1px solid;
+  padding: 0.5em;
+  border-radius: 45px;
 }
 .b-check{
   border:1px solid red;

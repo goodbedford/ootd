@@ -47,7 +47,7 @@ describe('POST /api/users', function(){
 });
 
 //GET api/logout
-decribe('GET api/logout', function(){
+describe('GET api/logout', function(){
   it('should return statusCode 200', function(done){
     request.get(baseUrl + 'logout', function(err, res, body){
       console.log('GET logout-', body);
