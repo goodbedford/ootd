@@ -24,8 +24,21 @@ a.a-tags{
 }
 #arrow{
   position: fixed;
+  bottom: 7em;
+  right: 1em;
+  font-size: 1em;
+  color: #4AD9D9;
+  border:1px solid;
+  padding: 0.5em;
+  border-radius: 45%;
+}
+#arrow:hover, #arrow-down:hover{
+  color: #F2385A;
+}
+#arrow-down{
+  position: fixed;
   bottom: 3em;
-  right: 5em;
+  right: 1em;
   font-size: 1em;
   color: #4AD9D9;
   border:1px solid;
