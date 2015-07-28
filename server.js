@@ -85,6 +85,7 @@ app.get('/api/users', function(req, res){
 //POST USER /api/users
 app.post('/api/users', function(req, res){
   //console.log(req.body)
+
   var tempUser = {
     username: req.body.username,
     email: req.body.email,
@@ -114,11 +115,17 @@ app.post('/login', function(req, res){
 
 //Delete All LOOKS /api/looks/:id
 app.delete('/api/looks/:id', function(req, res){
-  console.log("look params id:", req.params.id)
-  db.Look.remove({_id: req.params.id}, function(err, look){
-    console.log("removed look: ", look);
-      res.send("removed look: ");
+  req.currentUser(function(err, user){
+    if( user){
+      console.log("look params id:", req.params.id)
+      db.Look.remove({_id: req.params.id}, function(err, look){
+        console.log("removed look: ", look);
+          res.send("removed look: ");
+      });
+    }
   });
+
+
 });
 //GET ALL LOOKS /api/users/:id/favs/all
 app.get('/api/users/:id/favs/all', function(req, res){
@@ -131,19 +138,27 @@ app.get('/api/users/:id/favs/all', function(req, res){
 
 //POST ALL LOOKS /api/users/:id/favs/all
 app.post('/api/users/:id/favs/all', function(req, res){
-  //console.log("the looks body Id", req.params.id);
-  var look = new db.Look({url:req.body.url, type:"all"});
-  //console.log("this is the look--", look);
-  look.save(function(err, look){
-    db.User.findOne({_id: req.params.id}, function(err, user){
-      user.fav_all.push(look._id);
-      user.save(function(err, user){
-        console.log("the user is saved:", user);
-        console.log("the look is saved", look);
-       res.status(201).json(user);  
+  req.currentUser(function(err, user){
+    if( user){
+      //console.log("the looks body Id", req.params.id);
+      var look = new db.Look({url:req.body.url, type:"all"});
+      //console.log("this is the look--", look);
+      look.save(function(err, look){
+        db.User.findOne({_id: req.params.id}, function(err, user){
+          user.fav_all.push(look._id);
+          user.save(function(err, user){
+            console.log("the user is saved:", user);
+            console.log("the look is saved", look);
+           res.status(201).json(user);  
+          });
+        });
       });
-    });
+    } else{
+      console.log("favorite not saved");
+    }
   });
+
+
 });
 //PUT ALL LOOKS /api/users/:id/favs/all
 app.put('/api/users/:id/favs/all', function(req, res){
