@@ -116,6 +116,14 @@ app.post('/login', function(req, res){
     res.send(user);
   });
 });
+//GET LOOKS
+app.get('/api/looks', function(req,res){
+  request.get('https://api.instagram.com/v1/tags/ootd/media/recent?client_id=' + process.env.clientId, function(err,respond, body){
+    data = JSON.parse(body);
+    console.log(data.data);
+    res.send(data.data);
+  });
+});
 
 //Delete All LOOKS /api/looks/:id
 app.delete('/api/looks/:id', function(req, res){

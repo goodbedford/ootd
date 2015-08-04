@@ -30,14 +30,12 @@ $(document).ready(function(){
   //GET looks
   function getLooks(){
     $.ajax({
-      //url: "/api/looks",
-      url: "https://api.instagram.com/v1/tags/ootd/media/recent?client_id=6f1ace0e97194e09adbe7c7740d51531",
+      url: "/api/looks",
       type: "GET",
       crossDomain: true,
-      dataType: "jsonp",
       success: function(data){
-        //console.log(data.data);
-        _.each(data.data, function(look){
+        console.log("look server", data);
+        _.each(data, function(look){
           look = imgExtractor(look)
           //console.log(look);
           var $look = template(look);
