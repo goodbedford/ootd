@@ -8,15 +8,19 @@ var express = require("express"),
     _ = require("underscore"),
     request = require('request'),
     app = express(),
+    dotenv = require("dotenv"),
     corsOptions = {
           origin: 'http://localhost:3000'
     };
 
+ dotenv.load();  
+    
+ 
 // Connect to Database
 mongoose.connect(
     process.env.MONGOLAB_URI || 
     process.env.MONGOHQ_URL ||
-    require("./config").MONGO_URI);
+    'mongodb://localhost/ootd');
 
 // middleware
 app.use(bodyParser.urlencoded({extended: false}));
@@ -28,9 +32,9 @@ app.use(cors({credentials: true, origin: true}));
 app.use(session({
   saveUninitialized: true,
   resave: true,
-  secret: process.env.SESSION_SECRET || require("./config").SESSION_SECRET,
+  secret: process.env.SESSION_SECRET,
   cookie: { maxAge: 60000 }
-
+  
 }));  
 
 app.use('/', function(req, res, next){
@@ -337,7 +341,7 @@ app.put('/api/users/:id/favs/pieces', function(req, res){
 
 
 
-app.listen(process.env.PORT || require("./config").PORT, function(){
+app.listen(process.env.PORT, function(){
   console.log("server started on localhost: 3000");
 });
 
