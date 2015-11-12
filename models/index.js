@@ -6,8 +6,6 @@ var mongoose = require('mongoose'),
 
 
 
-
-
     module.exports.Look = Look;
     //module.exports.LookSchema = LookSchema;
     module.exports.User = User;

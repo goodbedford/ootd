@@ -102,7 +102,7 @@ app.post('/api/users', function(req, res){
   );
 });
 //DELETE USER /api/users/:id
-app.post('/api/users/:id', function(req, res){
+app.delete('/api/users/:id', function(req, res){
   db.User.find({_id: req.params.id}, function(err, user){
     console.log("user deleted", user);
     res.send("user was deleted:");
