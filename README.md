@@ -7,6 +7,7 @@ I would like to thank my instructors, classmates and my wife for all the help an
 This was my first official project at General Assembly Web Development Immersive Program.
 
 ##OOTD is an acronym for Outfit Of The Day.
+http://ootd-demo.herokuapp.com/
 Project was to make an API using Node and Express. The Idea is to grab images from Instragram API
 then give users the ability to save their favorite Outfits by a few different
 catorgories. The User can save Outfits, Tops, Legs, Shoes and Pieces.
