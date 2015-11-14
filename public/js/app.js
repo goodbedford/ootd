@@ -5,9 +5,14 @@ $(document).ready(function() {
   var gTemplate = _.template($("#grid-template").html());
   var baseUrl = "http://localhost:3000/api/";
     //hide collapsable
-  $("#fav-menu").hide();
+  //$("#fav-menu").hide();
+  // $("#grid-container").addClass("grid-active").hide();
+  //$("#grid-container").hide();
 
-  //load page with looks
+  looksModeView();
+
+  //load page with lookls
+
   getLooks();
   checkCurrentUser();
   $("div.row-sign-up").hide();
@@ -24,7 +29,7 @@ $(document).ready(function() {
   }, {
     url: "https://cevalenti.files.wordpress.com/2013/08/casual-outfits-51.jpg",
     createdDate: new Date()
-  }]
+  }];
 
   //GET looks
   function getLooks() {
@@ -33,9 +38,9 @@ $(document).ready(function() {
       type: "GET",
       crossDomain: true,
       success: function(data) {
-        console.log("look server", data);
+        // console.log("look server", data);
         _.each(data, function(look) {
-          look = imgExtractor(look)
+          look = imgExtractor(look);
             //console.log(look);
           var $look = template(look);
           $("#looks-container").append($look);
@@ -54,9 +59,12 @@ $(document).ready(function() {
       favActive(this);
       //console.log("this button is:", this);   
     });
+
+
     $("#looks-container").on("click", ".btn-all", function(e) {
       //e.preventDefault();
-      //console.log("this in looks container click-",$(this))
+      //console.log("this in looks container 
+       // -",$(this))
       // $(this).addClass("fav-active");
       var $iconRow = $(this).parent().parent();
       //console.log("the iconRow", $iconRow.html() );
@@ -65,7 +73,7 @@ $(document).ready(function() {
       var favAll = {
         url: $img.attr("src")
       };
-      console.log("fav_all:", favAll);
+      // console.log("fav_all:", favAll);
       $.ajax({
         url: "/api/users/" + user._id + "/favs/all",
         type: "POST",
@@ -155,13 +163,23 @@ $(document).ready(function() {
         }
       });
     });
+
+
     //Fav Click
     $("#fav-grid-btn").on("click", function(e) {
       console.log("i clicked fav btn", user._id);
-      $("#grid-container").toggleClass("hide").toggleClass("grid-active");
-      $("#looks-container").toggleClass("hide");
-
+      // $("#grid-container").toggleClass("hide").toggleClass("grid-active");
+      // $("#looks-container").toggleClass("hide");
+      //xx $("#looks-mode-collapse").toggleClass("grid-active");
+      //showMenu();
+      
       if ($("#grid-container").hasClass("grid-active")) {
+        gridModeView();
+
+        //xx $("#grid-container").show().removeClass("grid-active");
+        //xx $("#looks-container").hide();
+        $("#grid-container").removeClass("grid-active");
+
         $("#fav-all-container").empty();
         $("#fav-tops-container").empty();
         $("#fav-legs-container").empty();
@@ -173,6 +191,7 @@ $(document).ready(function() {
           type: "GET",
           success: function(data) {
             //console.log("the data is", data);
+
             _.each(data.fav_all, function(look) {
               //console.log("inside each grid look: ", look);
               var $look = gTemplate(look);
@@ -233,6 +252,10 @@ $(document).ready(function() {
           }
         });
       } else {
+        //xx $("#grid-container").addClass("grid-active").hide();
+        //xx $("#looks-container").show();
+        //xx showMenu();
+        looksModeView();
         getLooks();
       }
     });
@@ -273,6 +296,7 @@ $(document).ready(function() {
         });
       }
     });
+
   }
   //Guest Sign in
   $("#guest-btn").on("click", function(e) {
@@ -288,8 +312,12 @@ $(document).ready(function() {
       data: tempUser,
       success: function(data) {
         console.log(data);
+        //xx $("#grid-container").addClass("grid-active");
         setLooksContainer(data);
-        //$("#currentUser").text("Username: " + data.username); 
+        //set locale storage session id
+        localStorage.setItem("current_user", data.username);
+        checkCurrentUser();
+        looksModeView();
       }
     });
   });
@@ -310,13 +338,13 @@ $(document).ready(function() {
   });
 
   //Sign UP Submit Form
-  $("#submit-sign-up-btn").on("click", function(e) {
+  $("#submit-sign-up-btn").on("submit", function(e) {
     e.preventDefault();
-    console.log("I submitted sign up")
+    console.log("I submitted sign up");
     var tempUser = {};
-    tempUser.email = $("#sign-up-email").val();
-    tempUser.username = $("#sign-up-username").val();
-    tempUser.password = $("#sign-up-password").val();
+    tempUser.email = $("#signUpEmail").val();
+    tempUser.username = $("#signUpUsername").val();
+    tempUser.password = $("#signUpPassword").val();
     console.log(tempUser);
     $.ajax({
       url: "/api/users",
@@ -324,12 +352,19 @@ $(document).ready(function() {
       data: tempUser,
       success: function(data) {
         setLooksContainer(data);
-        console.log("return user-", data);
+        //console.log("return user-", data);
+        
+        //set locale storage session id
+        localStorage.setItem("current_user", data.username);
+        checkCurrentUser();
+
+        // $("#formSignUp").trigger("reset");
+        // $("#sign-up-btn").trigger("click");
       }
     });
 
-    $("#form-sign-up").trigger("reset");
-    $("#sign-up-btn").trigger("click");
+    // $("#formSignUp").trigger("reset");
+    // $("#sign-up-btn").trigger("click");
   });
 
   //Login
@@ -348,9 +383,9 @@ $(document).ready(function() {
   });
 
   //Login submit
-  $("#submit-login-btn").on("click", function(e) {
+  $("#submit-login-btn").on("submit", function(e) {
     e.preventDefault();
-    console.log("I submitted login")
+    console.log("I submitted login");
     var tempUser = {};
     tempUser.email = $("#login-email").val();
     tempUser.password = $("#login-password").val();
@@ -362,7 +397,11 @@ $(document).ready(function() {
       data: tempUser,
       success: function(data) {
         console.log(data);
-        setLooksContainer(data)
+        $("#grid-container").addClass("grid-active");
+        setLooksContainer(data);
+        //set locale storage session id
+        localStorage.setItem("current_user", data.username);
+        checkCurrentUser();
       }
     });
     $("#form-login").trigger("reset");
@@ -375,14 +414,23 @@ $(document).ready(function() {
       success: function(data) {
         console.log(data);
         checkCurrentUser();
+        showMenu();
+        $("#grid-container").remove("grid-active").hide();
+        $("#looks-container").show();
+        getLooks();
+        // end local storage session
+        localStorage.removeItem("current_user");
+        window.location.href="/";
       }
     });
   });
 
   // Menu Collapse
   $("#menu-collapse").on("click", function() {
-    $("#fav-menu").slideToggle("fast");
-    $(this).toggleClass("glyphicon-plus").toggleClass("glyphicon-minus");
+    //showMenu();
+    
+   $("#fav-menu").slideToggle("fast");
+    //$(this).toggleClass("glyphicon-plus").toggleClass("glyphicon-minus");
   });
   // Current Tab
 
@@ -400,25 +448,135 @@ $(document).ready(function() {
     return tempImg;
   }
 
-  function checkCurrentUser() {
+  // check for broken images
+  function checkImageUrl( look ){
+    console.log("look,", look);
     $.ajax({
-      url: "/api/current",
-      type: 'GET',
-      success: function(data) {
-        if (data == undefined || data == null) {
-          $("#currentUser").text("Please Login ");
-        } else {
-          $("#currentUser").text("Logged in as: " + data.username);
+      url: look.url,
+      type: "GET",
+      success: function( img){
+        //console.log("the image is:", img);
+        if( img){
+          console.log("keep image");
         }
+      },
+      error: function(xhr, status, thrown){
+        console.log("bad image:status ", status );
+        console.log(xhr,thrown);
+        console.log(" the bad look_id,", look._id);
+        $.ajax({
+          url: "/api/looks/" + look._id,
+          type: "DELETE",
+          success: function(data) {
+            console.log("returned data from delete: ", data);
+          }
+        });
       }
     });
+  }
+
+  function checkCurrentUser() {
+        var current_user = localStorage.getItem("current_user");
+        if (current_user == undefined || current_user == null) {
+          $("#currentUser").text("Please Login ");
+        } else {
+          $("#currentUser").text("Logged in as: " + current_user);
+        }
+  }
+  //return current User
+  function showMenu() {
+        var current_user = localStorage.getItem("current_user");
+        //console.log("localstorage user:", current_user)
+        
+        //if current user show fav-menu
+        if (current_user == undefined || current_user == null) {
+          console.log("no current user");
+
+          // $("#fav-menu").hide(); 
+        } else {
+          if ($("#looks-mode-collapse").hasClass("grid-active") ){
+            $("#looks-mode-collapse").show();
+            //$("#fav-menu").slideToggle("fast");
+            $("#menu-collapse").toggleClass("glyphicon-plus").toggleClass("glyphicon-minus");
+
+            return;
+          }
+        console.log("bedford");
+
+        //$("#fav-menu").show();
+        //$("#grid-container").addClass("grid-active").show();
+
+        $("#fav-menu").slideToggle("fast");
+        $("#menu-collapse").toggleClass("glyphicon-plus").toggleClass("glyphicon-minus");
+
+        //  could not fix the views for showing buttons that are not clickable. sorry:(
+        //   console.log("the data is:", data);
+        //   if($("#looks-mode-collapse").hasClass("looks-mode-view") ){
+        //      $("#menu-collapse").toggleClass("glyphicon-plus").toggleClass("glyphicon-minus");
+        //      $("#fav-menu").slideToggle("fast");
+        //      $("#looks-mode-collapse").removeClass("looks-mode-view");
+
+        //   } else {
+        //     console.log("don't show");
+        //     $("#looks-mode-collapse").hide().addClass("looks-mode-view");
+        //     $("#menu-collapse").toggleClass("glyphicon-plus").toggleClass("glyphicon-minus");
+        //     $("#fav-menu").slideToggle("fast");
+
+        //     //$("#fav-menu").show(); 
+        //   }
+      }
+  }
+
+  function looksModeView(){
+    var current_user = localStorage.getItem("current_user");
+    var $fav_menu = $("#fav-menu");
+    var $looks_collapse = $("#looks-mode-collapse");
+    var $fav_grid_button = $("#fav-grid-btn");
+    var $grid_container = $("#grid-container");
+    var $looks_container = $("#looks-container");
+    if(current_user){
+      $fav_menu.show();
+      $fav_grid_button.show();
+      $looks_collapse.hide();
+      $grid_container.addClass("grid-active").hide();
+      $looks_container.show();
+      // $("#menu-collapse").addClass("glyphicon-plus").removeClass("glyphicon-minus");
+
+    } else {
+      $fav_menu.hide();
+      $fav_grid_button.hide();
+      $grid_container.removeClass("grid-active").hide();
+      $looks_container.show();
+      // $("#menu-collapse").addClass("glyphicon-plus").removeClass("glyphicon-minus");
+
+    }
+  }
+
+  function gridModeView(){
+    var current_user = localStorage.getItem("current_user");
+    var $fav_menu = $("#fav-menu");
+    var $looks_collapse = $("#looks-mode-collapse");
+    var $fav_grid_button = $("#fav-grid-btn");
+    var $grid_container = $("#grid-container");
+    var $looks_container = $("#looks-container");
+    if(current_user){
+      $fav_menu.show();
+      $fav_grid_button.show();
+      $looks_collapse.show();
+      $grid_container.addClass("grid-active").show();
+      $looks_container.hide();
+      $("#menu-collapse").addClass("glyphicon-plus");
+
+    } else {
+      console.log("error grid view");
+    }
   }
 
   function favActive(btn) {
     $(btn).addClass("fav-active");
     $(btn).on("mouseout", function() {
       $(this).focusout();
-    })
+    });
 
     //console.log("in fav act func", $(btn) );
   }

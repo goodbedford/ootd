@@ -13,7 +13,7 @@ var express = require("express"),
           origin: 'http://localhost:3000'
     };
 
- dotenv.load();  
+ dotenv.load();   
     
  
 // Connect to Database
@@ -33,18 +33,18 @@ app.use(session({
   saveUninitialized: true,
   resave: true,
   secret: process.env.SESSION_SECRET,
-  cookie: { maxAge: 60000 }
+  cookie: { maxAge: 600000 }
   
 }));  
 
 app.use('/', function(req, res, next){
   //save userId in session for logged in user
   req.login = function(user){
-    console.log("userId_: ",user._id)
-    console.log("user.id: ",user.id)
+    console.log("userId_: ",user._id);
+    console.log("user.id: ",user.id);
 
     req.session.userId = user._id;
-    console.log("sess.userId:", req.session.userId)
+    console.log("sess.userId:", req.session.userId);
   };
 
   //find current logged in user based on session.userId
@@ -66,7 +66,7 @@ app.use('/', function(req, res, next){
 
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/public/views/index.html');
-})
+});
 
 //GET Current User
 app.get('/api/current', function(req, res){
@@ -84,8 +84,8 @@ app.get('/api/users', function(req, res){
   db.User.find({}, function(err, user){
     console.log("user sent", user);
     res.json(user);
-  })
-})
+  });
+});
 //POST USER /api/users
 app.post('/api/users', function(req, res){
   //console.log(req.body)
@@ -94,7 +94,7 @@ app.post('/api/users', function(req, res){
     username: req.body.username,
     email: req.body.email,
     password: req.body.password
-  }
+  };
   db.User.createSecure( tempUser,
     function (err, user){
       res.send(user);
@@ -120,7 +120,7 @@ app.post('/login', function(req, res){
 app.get('/api/looks', function(req,res){
   request.get('https://api.instagram.com/v1/tags/ootd/media/recent?client_id=' + process.env.clientId, function(err,respond, body){
     data = JSON.parse(body);
-    console.log(data.data);
+    //console.log(data.data);
     res.send(data.data);
   });
 });
@@ -129,16 +129,15 @@ app.get('/api/looks', function(req,res){
 app.delete('/api/looks/:id', function(req, res){
   req.currentUser(function(err, user){
     if( user){
-      console.log("look params id:", req.params.id)
+      console.log("look params id:", req.params.id);
       db.Look.remove({_id: req.params.id}, function(err, look){
         console.log("removed look: ", look);
           res.send("removed look: ");
       });
     }
   });
-
-
 });
+
 //GET ALL LOOKS /api/users/:id/favs/all
 app.get('/api/users/:id/favs/all', function(req, res){
   console.log("the req params-", req.params.id);
@@ -181,7 +180,7 @@ app.put('/api/users/:id/favs/all', function(req, res){
         console.log("look id in update: ", lookId);
         if( look == lookId){
           favIndex =  user.fav_all.indexOf(look);
-          console.log("favIndex in update: ", favIndex)
+          console.log("favIndex in update: ", favIndex);
           user.fav_all.splice(favIndex, 1);
         }
       });
@@ -225,7 +224,7 @@ app.put('/api/users/:id/favs/tops', function(req, res){
         console.log("look id in update: ", lookId);
         if( look == lookId){
           favIndex =  user.fav_tops.indexOf(look);
-          console.log("favIndex in update: ", favIndex)
+          console.log("favIndex in update: ", favIndex);
           user.fav_tops.splice(favIndex, 1);
         }
       });
@@ -267,7 +266,7 @@ app.put('/api/users/:id/favs/legs', function(req, res){
         console.log("look id in update: ", lookId);
         if( look == lookId){
           favIndex =  user.fav_legs.indexOf(look);
-          console.log("favIndex in update: ", favIndex)
+          console.log("favIndex in update: ", favIndex);
           user.fav_legs.splice(favIndex, 1);
         }
       });
@@ -331,7 +330,7 @@ app.put('/api/users/:id/favs/pieces', function(req, res){
         console.log("look id in update: ", lookId);
         if( look == lookId){
           favIndex =  user.fav_pieces.indexOf(look);
-          console.log("favIndex in update: ", favIndex)
+          console.log("favIndex in update: ", favIndex);
           user.fav_pieces.splice(favIndex, 1);
         }
       });
@@ -340,6 +339,10 @@ app.put('/api/users/:id/favs/pieces', function(req, res){
        res.json(user);  
       });
   });
+});
+
+app.get("*", function(req, res){
+  res.redirect('/');
 });
 
 
