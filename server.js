@@ -334,6 +334,7 @@ app.put('/api/users/:id/favs/pieces', function(req, res){
           user.fav_pieces.splice(favIndex, 1);
         }
       });
+      
       user.save(function(err, user){
         console.log("updated user: ", user);
        res.json(user);  
