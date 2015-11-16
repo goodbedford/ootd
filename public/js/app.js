@@ -25,11 +25,11 @@
 
   });
   //load page with looks
-  looksModeView();
 
   getLooks();
   checkCurrentUser();
   setCurrentUser();
+  looksModeView();
 
   $("div.row-sign-up").hide();
   $("div.row-login").hide();
