@@ -334,7 +334,7 @@ app.put('/api/users/:id/favs/pieces', function(req, res){
           user.fav_pieces.splice(favIndex, 1);
         }
       });
-      
+
       user.save(function(err, user){
         console.log("updated user: ", user);
        res.json(user);  
@@ -353,7 +353,7 @@ app.get("*", function(req, res){
 
 
 
-app.listen(process.env.PORT, function(){
+app.listen(process.env.PORT || 3000, function(){
   console.log("server started on localhost: 3000");
 });
 
