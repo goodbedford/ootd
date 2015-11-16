@@ -16,16 +16,16 @@
           <header class="col-xs-9">
             <span id="up"></span> 
             <div class="pull-left header">
-              <span id="currentUser" class="currentUser"></span>|
-              <span class=""><a id="guest-btn" class="a-header" href="#">Guest </a></span>|
-              <span class=""><a id="sign-up-btn" class="a-header" href="#">Sign Up </a></span>|
-              <span class=""><a id="login-btn" class="a-header" href="#">Login </a></span>|
-              <span class=""><a id="logout-btn" class="a-header" href="#">Log Out</a></span>
+              <span id="currentUser" class="currentUser">|</span>
+              <span class=""><a id="guest-btn" class="a-header" href="#">Guest |</a></span>
+              <span class=""><a id="sign-up-btn" class="a-header" href="#">Sign Up |</a></span>
+              <span class=""><a id="login-btn" class="a-header" href="#">Login |</a></span>
+              <span class=""><a id="logout-btn" class="a-header" href="#">Log Out </a></span>
             </div>
           </header>
           <div class="col-xs-3 col-sm-2 pull-right fixed-top2">
             <span class="logo-text">#OOTD</span>
-            <button id="fav-more-btn" class="fav-btn pull-right glyphicon glyphicon-heart"><br>more outfits</button>
+            <button id="fav-more-btn" class="fav-btn pull-right glyphicon glyphicon-heart hidden"><br>more outfits</button>
             <div id="fav-menu" class="">
               <button id="fav-grid-btn" class="fav-btn glyphicon glyphicon-heart"><br>favs</button>
               <div id="looks-mode-collapse" class="" style="display: none;">
@@ -126,21 +126,19 @@
     <!-- underscore Looks Grid template -->
   <script type="text/template" id="grid-template">
     <div class="col-xs-6 col-sm-4">
-      <img src="<%= url %>" alt="outfit logo" class="img-responsive grid-img">
+      <img src="<%= url %>" alt="outfit logo" class="img-responsive grid-img" data-index="<%= _id %>" >
       <button class="close-img" data-index="<%= _id %>" data-type="<%= type %>"><span class="glyphicon glyphicon-remove delete-img" ></span></button>
     </div>
   </script> 
 
 
 </div>
-
-
-
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
   <script src="http://cdn.jsdelivr.net/jquery.validation/1.14.0/jquery.validate.js"></script>
+
 
   <script src="js/myValidate.js"></script>
   <script src="js/app.js"></script>

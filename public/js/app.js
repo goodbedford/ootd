@@ -1,5 +1,6 @@
-$(document).ready(function() {
+// $(document).ready(function() {
   //$("div.row-header").nextUntil("div.row-looks-container").hide();
+
 
   var template = _.template($("#looks-template").html());
   var gTemplate = _.template($("#grid-template").html());
@@ -8,13 +9,28 @@ $(document).ready(function() {
   //$("#fav-menu").hide();
   // $("#grid-container").addClass("grid-active").hide();
   //$("#grid-container").hide();
+  var scrollTop = $(window).scrollTop();
+  var scrollNum = 10000;
+  var TEN_GS = 10000;
 
+  $(window).on("scroll", function(event) {
+    // console.log("scrollY:", window.scrollY);
+    // console.log("scroll num", scrollNum);
+    if( window.scrollY > scrollNum ){
+      console.log("scrollY:", window.scrollY);
+      console.log("Add scroll num", scrollNum);
+       moreOutfits();
+      scrollNum += TEN_GS;
+    }
+
+  });
+  //load page with looks
   looksModeView();
-
-  //load page with lookls
 
   getLooks();
   checkCurrentUser();
+  setCurrentUser();
+
   $("div.row-sign-up").hide();
   $("div.row-login").hide();
   var looks = [{
@@ -39,6 +55,10 @@ $(document).ready(function() {
       crossDomain: true,
       success: function(data) {
         // console.log("look server", data);
+        var current_user = localStorage.getItem("current_user");
+        if(current_user){
+
+        }
         _.each(data, function(look) {
           look = imgExtractor(look);
             //console.log(look);
@@ -126,7 +146,7 @@ $(document).ready(function() {
     //favs-shoes
     $("#looks-container").on("click", ".btn-shoes", function(e) {
       //e.preventDefault();
-      console.log("this in looks container click-", $(this))
+      console.log("this in looks container click-", $(this));
       var $iconRow = $(this).parent().parent();
       //console.log("the iconRow", $iconRow.html() );
       var $img = $iconRow.prev(".row-looks").find("section img");
@@ -196,6 +216,7 @@ $(document).ready(function() {
               //console.log("inside each grid look: ", look);
               var $look = gTemplate(look);
               $("#fav-all-container").prepend($look);
+              imgErrorHandler();
             });
           }
         });
@@ -209,6 +230,7 @@ $(document).ready(function() {
               console.log("inside each grid");
               var $look = gTemplate(look);
               $("#fav-tops-container").prepend($look);
+              imgErrorHandler();
             });
           }
         });
@@ -222,6 +244,8 @@ $(document).ready(function() {
               //console.log("inside each grid");
               var $look = gTemplate(look);
               $("#fav-legs-container").prepend($look);
+              imgErrorHandler();
+
             });
           }
         });
@@ -235,6 +259,8 @@ $(document).ready(function() {
               console.log("inside each grid");
               var $look = gTemplate(look);
               $("#fav-shoes-container").prepend($look);
+              imgErrorHandler();
+
             });
           }
         });
@@ -248,6 +274,8 @@ $(document).ready(function() {
               console.log("inside each grid");
               var $look = gTemplate(look);
               $("#fav-pieces-container").prepend($look);
+              imgErrorHandler();
+
             });
           }
         });
@@ -449,30 +477,14 @@ $(document).ready(function() {
   }
 
   // check for broken images
-  function checkImageUrl( look ){
-    console.log("look,", look);
-    $.ajax({
-      url: look.url,
-      type: "GET",
-      success: function( img){
-        //console.log("the image is:", img);
-        if( img){
-          console.log("keep image");
-        }
-      },
-      error: function(xhr, status, thrown){
-        console.log("bad image:status ", status );
-        console.log(xhr,thrown);
-        console.log(" the bad look_id,", look._id);
-        $.ajax({
-          url: "/api/looks/" + look._id,
-          type: "DELETE",
-          success: function(data) {
-            console.log("returned data from delete: ", data);
-          }
-        });
-      }
-    });
+  function imgErrorHandler(){ 
+      $("img").on("error", function(){
+         //alert("error with image");
+         console.log("this img error", $(this).data("index"));
+         var btn = $(this).next("button.close-img");
+         console.log("the btn is", btn);
+         btn.trigger("click");
+     });
   }
 
   function checkCurrentUser() {
@@ -481,7 +493,22 @@ $(document).ready(function() {
           $("#currentUser").text("Please Login ");
         } else {
           $("#currentUser").text("Logged in as: " + current_user);
+          console.log("current user", current_user);
         }
+  }
+  function setCurrentUser(){
+
+    if(localStorage.getItem("current_user")){
+      $.ajax({
+        url: "/api/current",
+        type: "GET",
+        success: function(currentUser) {
+          console.log(currentUser);
+          setLooksContainer(currentUser);
+        } 
+      });
+    }
+
   }
   //return current User
   function showMenu() {
@@ -534,7 +561,13 @@ $(document).ready(function() {
     var $fav_grid_button = $("#fav-grid-btn");
     var $grid_container = $("#grid-container");
     var $looks_container = $("#looks-container");
+    var $guest_btn = $("#guest-btn");
+    var $login = $("#login-btn");
+    var $sign_up_btn = $("#sign-up-btn");
     if(current_user){
+      $guest_btn.hide();
+      $login.hide();
+      $sign_up_btn.hide();
       $fav_menu.show();
       $fav_grid_button.show();
       $looks_collapse.hide();
@@ -543,6 +576,10 @@ $(document).ready(function() {
       // $("#menu-collapse").addClass("glyphicon-plus").removeClass("glyphicon-minus");
 
     } else {
+      $guest_btn.show();
+      $login.show();
+      $sign_up_btn.show();
+      $fav_menu.show();
       $fav_menu.hide();
       $fav_grid_button.hide();
       $grid_container.removeClass("grid-active").hide();
@@ -559,12 +596,16 @@ $(document).ready(function() {
     var $fav_grid_button = $("#fav-grid-btn");
     var $grid_container = $("#grid-container");
     var $looks_container = $("#looks-container");
+
+    
     if(current_user){
+
       $fav_menu.show();
       $fav_grid_button.show();
       $looks_collapse.show();
       $grid_container.addClass("grid-active").show();
       $looks_container.hide();
+
       $("#menu-collapse").addClass("glyphicon-plus");
 
     } else {
@@ -577,7 +618,49 @@ $(document).ready(function() {
     $(btn).on("mouseout", function() {
       $(this).focusout();
     });
+  }
+    // $("img").on("error", function(event){
+    //   alert("error with image");
+    // });
+  
+    // $('img').error(function () {
+    //     console.log("picture error", this);
+    // });
+
+
+    // $("img").error(function(){
+    //     alert("error with image");
+    // });
 
     //console.log("in fav act func", $(btn) );
-  }
-});
+  
+// });
+
+// document.body.addEventListener("error", function(event){
+//   //alert("error with image");
+
+//   console.log("the this error", event.srcElement);
+
+
+// }, true);
+
+
+// $("img").error(function(){
+//     alert("error with image");
+// });
+
+
+// var list = document.getElementsByTagName("img");
+// console.log("the list is ", list);
+// list.each(function(img){
+
+// img.addEventListener("error", function(){
+//   console.log("error with image");
+// }, true);
+// });
+
+
+
+
+
+
