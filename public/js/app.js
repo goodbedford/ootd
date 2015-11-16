@@ -55,10 +55,7 @@
       crossDomain: true,
       success: function(data) {
         // console.log("look server", data);
-        var current_user = localStorage.getItem("current_user");
-        if(current_user){
 
-        }
         _.each(data, function(look) {
           look = imgExtractor(look);
             //console.log(look);
