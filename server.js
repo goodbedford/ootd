@@ -340,7 +340,7 @@ app.put('/api/users/:id/favs/pieces', function(req, res){
        res.json(user);  
       });
   });
-});
+}); 
 
 app.get("*", function(req, res){
   res.redirect('/');
