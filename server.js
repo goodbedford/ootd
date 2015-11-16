@@ -43,11 +43,11 @@ app.use(session({
 app.use('/', function(req, res, next){
   //save userId in session for logged in user
   req.login = function(user){
-    console.log("userId_: ",user._id);
-    console.log("user.id: ",user.id);
+    // console.log("userId_: ",user._id);
+    // console.log("user.id: ",user.id);
 
     req.session.userId = user._id;
-    console.log("sess.userId:", req.session.userId);
+    // console.log("sess.userId:", req.session.userId);
   };
 
   //find current logged in user based on session.userId
@@ -129,7 +129,7 @@ app.get('/api/looks', function(req,res){
   request.get('https://api.instagram.com/v1/tags/ootd/media/recent?client_id=' + process.env.clientId, function(err,respond, body){
     data = JSON.parse(body);
     //console.log("the body", body);
-    console.log(data.data);
+    console.log("request insta data:", data.data);
     console.log("error:",err);
     res.json(data.data);
   }); 
@@ -150,7 +150,7 @@ app.delete('/api/looks/:id', function(req, res){
 
 //GET ALL LOOKS /api/users/:id/favs/all
 app.get('/api/users/:id/favs/all', function(req, res){
-  console.log("the req params-", req.params.id);
+  // console.log("the req params-", req.params.id);
   db.User.findOne({_id: req.params.id}).populate('fav_all').exec(function(err, user){
     console.log("server get user id fav all",user);
     res.json(user);
@@ -255,7 +255,7 @@ app.get('/api/users/:id/favs/legs', function(req, res){
 });
 //POST LEGS LOOK /api/users/:id/favs/legs
 app.post('/api/users/:id/favs/legs', function(req, res){
-  console.log("the legs looks body Id", req.params.id);
+  // console.log("the legs looks body Id", req.params.id);
   var look = new db.Look({url:req.body.url, type:"legs"});
   //console.log("this is the look--", look);
   look.save(function(err, look){
