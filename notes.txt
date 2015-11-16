@@ -1,0 +1,50 @@
+// if grid view is has class grid-active
+// show 
+// looksModeView
+fav-menu //show
+  fav-grid-btn
+    looks-mode-collapse //hide
+      grid-mode buttons
+
+// gridModeView
+fav-menu //show
+  fav-grid-btn
+    looks-mode-collapse //show
+      grid-mode-btns 
+
+
+menu-collapse on click
+runs showMenu
+ 
+
+showMenu
+ runs currentUser
+  if no user
+    nothing
+
+  else //with user
+    show fav-menu
+     if looks-mode-collapse  has class grid-active
+      show looks-mode-collapse
+        
+
+fav-grid-btn click
+
+  looks-mode-collapse toggleClass grid-active class
+
+//xx
+
+onerror="imgErrorHandler()"
+
+
+// function imgErrorHandler(){ 
+
+//   alert("error with image");
+// }
+
+
+// $("img").error(function(){
+//     alert("error with image");
+// });
+
+//console.log("in fav act func", $(btn) );

@@ -12,6 +12,9 @@ var express = require("express"),
     corsOptions = {
           origin: 'http://localhost:3000'
     };
+var ig = require('instagram-node').instagram();
+ig.use({client_id: process.env.clientId,
+        client_secret: process.env.clientSecret});
 
  dotenv.load();   
     
@@ -118,12 +121,17 @@ app.post('/login', function(req, res){
 });
 //GET LOOKS
 app.get('/api/looks', function(req,res){
-  request.get('https://api.instagram.com/v1/tags/ootd/media/recent?client_id=' + process.env.clientId, function(err,respond, body){
-    data = JSON.parse(body);
-    console.log(data.data);
-    console.log("error:",err);
-    res.send(data.data);
-  }); 
+
+  ig.tag_search('query', function(err, result, remaining, limit){
+    console.log("the result", result, "the remaining", remaining);
+    res.send(result.data);
+  });
+  // request.get('https://api.instagram.com/v1/tags/ootd/media/recent?client_id=' + process.env.clientId, function(err,respond, body){
+  //   data = JSON.parse(body);
+  //   console.log(data.data);
+  //   console.log("error:",err);
+  //   res.send(data.data);
+  // }); 
 });
 
 //Delete All LOOKS /api/looks/:id
