@@ -122,7 +122,7 @@ app.get('/api/looks', function(req,res){
     data = JSON.parse(body);
     //console.log(data.data);
     res.send(data.data);
-  });
+  }); 
 });
 
 //Delete All LOOKS /api/looks/:id
