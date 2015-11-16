@@ -120,7 +120,8 @@ app.post('/login', function(req, res){
 app.get('/api/looks', function(req,res){
   request.get('https://api.instagram.com/v1/tags/ootd/media/recent?client_id=' + process.env.clientId, function(err,respond, body){
     data = JSON.parse(body);
-    //console.log(data.data);
+    console.log(data.data);
+    console.log("error:",err);
     res.send(data.data);
   }); 
 });
