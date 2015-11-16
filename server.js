@@ -12,13 +12,13 @@ var express = require("express"),
     corsOptions = {
           origin: 'http://localhost:3000'
     };
-var ig = require('instagram-node').instagram();
+// var ig = require('instagram-node').instagram();
 
 
  dotenv.load();   
     
- ig.use({client_id: process.env.clientId,
-         client_secret: process.env.clientSecret}); 
+ // ig.use({client_id: process.env.clientId,
+ //         client_secret: process.env.clientSecret}); 
 // Connect to Database
 mongoose.connect(
     process.env.MONGOLAB_URI || 
