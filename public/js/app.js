@@ -52,7 +52,6 @@ $(document).ready(function() {
     $.ajax({
       url: "/api/looks",
       type: "GET",
-      crossDomain: true,
       success: function(data) {
         // console.log("look server", data);
 
