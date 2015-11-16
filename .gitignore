@@ -2,3 +2,4 @@ mangement.js
 config.js
 .env
 **/node_modules
+node_modules
