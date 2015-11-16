@@ -1,4 +1,4 @@
-// $(document).ready(function() {
+$(document).ready(function() {
   //$("div.row-header").nextUntil("div.row-looks-container").hide();
 
 
@@ -486,7 +486,7 @@
 
   function checkCurrentUser() {
         var current_user = localStorage.getItem("current_user");
-        if (current_user == undefined || current_user == null) {
+        if (current_user === undefined || current_user === null) {
           $("#currentUser").text("Please Login ");
         } else {
           $("#currentUser").text("Logged in as: " + current_user);
@@ -513,7 +513,7 @@
         //console.log("localstorage user:", current_user)
         
         //if current user show fav-menu
-        if (current_user == undefined || current_user == null) {
+        if (current_user === undefined || current_user === null) {
           console.log("no current user");
 
           // $("#fav-menu").hide(); 
@@ -654,7 +654,7 @@
 // img.addEventListener("error", function(){
 //   console.log("error with image");
 // }, true);
-// });
+});
 
 
 
