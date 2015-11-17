@@ -53,7 +53,7 @@ $(document).ready(function() {
       url: "/api/looks",
       type: "GET",
       success: function(data) {
-        // console.log("look server", data);
+        console.log("look server", data);
 
         _.each(data, function(look) {
           look = imgExtractor(look);
