@@ -122,6 +122,8 @@ app.post('/login', function(req, res){
 //GET LOOKS
 app.get('/api/looks', function(req,res){
 
+  console.log('[https://api.instagram.com/v1/tags/ootd/media/recent?client_id=' + process.env.clientId + ']');
+
   // ig.tag('ootd', function(err, result, remaining, limit){
   //   console.log("the result", result, "the remaining", remaining);
   //   res.send(result);
