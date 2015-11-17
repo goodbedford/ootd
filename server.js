@@ -128,7 +128,6 @@ app.get('/api/looks', function(req,res){
   // });
   request.get('https://api.instagram.com/v1/tags/ootd/media/recent?client_id=' + process.env.clientId, function(err,respond, body){
     data = JSON.parse(body);
-    //console.log("the body", body);
     console.log("request insta data:", data.data);
     console.log("error:",err);
     res.json(data.data);
