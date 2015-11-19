@@ -8,6 +8,19 @@ lightblue - #4AD9D9
 orange - #F5A503
 lightgreen - #E9F1DF
 */
+body{
+  background-color: white;
+  min-width: 320px;
+  font-family: 'Questrial', sans-serif;
+
+}
+
+.secondaryColor{
+  color: #F5A503;  /*orange*/
+}
+
+
+/*******************************/
 .pink-btm{
  border-bottom: 10px solid rgba(242,56,90, 0.4);
 }
@@ -48,12 +61,6 @@ a.a-tags{
 .b-check{
   border:1px solid red;
   padding: 5px 50px
-}
-body{
-  background-color: white;
-  min-width: 320px;
-  font-family: 'Questrial', sans-serif;
-
 }
 
 .border-thin{
@@ -179,6 +186,11 @@ button.fav-btn:hover{
   padding: 20px 0;
   color: #4AD9D9;
 }
+.head-title{
+  font-size: 2em;
+  color: #F2385A;
+  margin: 1em 0;
+}
 .icon-btn{
   font-size: 1em;
   color: #4AD9D9;
@@ -188,9 +200,13 @@ button.fav-btn:hover{
   padding:0;
   /*margin: 0 .19em 0 0;*/
 }
-.icons-row{
+/*.icons-row{
   padding: 0.5em;
   margin-top: 2.14em;
+}*/
+.row-icons{
+  padding: 0.5em;
+  margin: 2.14em 0;
 }
 img{
   margin: 0 auto;

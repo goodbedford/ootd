@@ -13,7 +13,7 @@
       <div class="col-xs-12 col-lg-8 col-lg-offset-2">
         <!-- row header -->
         <div id="row-header" class="row row-header">
-          <header class="col-xs-9">
+          <header class="col-xs-9 col-sm-12">
             <span id="up"></span> 
             <div class="pull-left header">
               <span id="currentUser" class="currentUser">|</span>
@@ -21,7 +21,7 @@
               <span class=""><a id="sign-up-btn" class="a-header" href="#">Sign Up |</a></span>
               <span class=""><a id="login-btn" class="a-header" href="#">Login |</a></span>
               <span class=""><a id="logout-btn" class="a-header" href="#">Log Out </a></span>
-            </div>
+            </div><br>
           </header>
           <div class="col-xs-3 col-sm-2 pull-right fixed-top2">
             <span class="logo-text">#OOTD</span>
@@ -34,17 +34,21 @@
                 <a href="#legs" class="a-tags"><button class="fav-btn">Legs</button></a>
                 <a href="#shoes" class="a-tags"><button class="fav-btn">Shoes</button></a>
                 <a href="#pieces" class="a-tags"><button class="fav-btn">Pieces</button></a>
+                <br>
               </div>
             </div>
             <button id="menu-collapse" class="collapse-btn glyphicon glyphicon-plus"><span></span></button>
           </div>
+            <div class="text-center col-xs-9 col-sm-12"><span class="head-title">Outfit Of The Day</span><br>
+              <div id="msg-login-help" class="secondaryColor">Login in to save your favorites looks</div><br>
+            </div>
 
         </div>
           <!-- row footer -->
 
         </div>
         <!-- row login -->
-        <div class="row row-login">
+        <div class="row row-login" style="display: none;">
           <section class="col-xs-12">
             <form id="form-login">
               <div class="form-group">
@@ -58,7 +62,7 @@
           </section>
         </div>
         <!-- row sign-up -->
-        <div class="row row-sign-up">
+        <div class="row row-sign-up" style="display: none;">
           <section class="col-xs-12">
             <form id="formSignUp">
               <div class="form-group">
@@ -80,7 +84,7 @@
         <div class="row row-looks-container">
           <div id="looks-container" class="col-xs-12 looks-container">
           </div>
-          <div id="grid-container" class="col-xs-12 looks-container">
+          <div id="grid-container" class="col-xs-12 looks-container" style="display: none;">
             <h3 class="col-xs-12 top-pad-7 fav-header"><a id="outfits" >Favorite Outfits</a></h3>
             <div id="fav-all-container"></div>
             <h3 class="col-xs-12 fav-header"><a id="tops" >Favorite Tops</a></h3>
@@ -112,7 +116,7 @@
         </div>
         <!-- row Icons -->
         <div class="row row-icons">
-          <div class="col-xs-12 icons-row">
+          <div class="col-xs-12 icons-row" style="display: none;">
               <button type="button" class="icon-btn btn-all border-rt"><span class="icon-pad">All</span></button>
               <button type="button" class="icon-btn btn-tops border-rt"><span class="icon-pad">Tops</span></button>
               <button type="button" class="icon-btn btn-legs border-rt"><span class="icon-pad">Legs</span></button>

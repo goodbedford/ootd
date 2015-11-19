@@ -1,21 +1,16 @@
 $(document).ready(function() {
-  //$("div.row-header").nextUntil("div.row-looks-container").hide();
 
 
   var template = _.template($("#looks-template").html());
   var gTemplate = _.template($("#grid-template").html());
   var baseUrl = "http://localhost:3000/api/";
-    //hide collapsable
-  //$("#fav-menu").hide();
-  // $("#grid-container").addClass("grid-active").hide();
-  //$("#grid-container").hide();
+
   var scrollTop = $(window).scrollTop();
   var scrollNum = 10000;
   var TEN_GS = 10000;
 
   $(window).on("scroll", function(event) {
-    // console.log("scrollY:", window.scrollY);
-    // console.log("scroll num", scrollNum);
+
     if( window.scrollY > scrollNum ){
       console.log("scrollY:", window.scrollY);
       console.log("Add scroll num", scrollNum);
@@ -26,13 +21,13 @@ $(document).ready(function() {
   });
   //load page with looks
 
-  getLooks();
   checkCurrentUser();
   setCurrentUser();
-  looksModeView();
+  getLooks();
+  // looksModeView();
 
-  $("div.row-sign-up").hide();
-  $("div.row-login").hide();
+  // $("div.row-sign-up").hide();
+  // $("div.row-login").hide();
   var looks = [{
     url: "http://topmodafemei.ro/wp-content/uploads/2014/08/outfit6.png",
     createdDate: new Date()
@@ -60,6 +55,7 @@ $(document).ready(function() {
             //console.log(look);
           var $look = template(look);
           $("#looks-container").append($look);
+          looksModeView();
         });
       }
     });
@@ -80,8 +76,6 @@ $(document).ready(function() {
     $("#looks-container").on("click", ".btn-all", function(e) {
       //e.preventDefault();
       //console.log("this in looks container 
-       // -",$(this))
-      // $(this).addClass("fav-active");
       var $iconRow = $(this).parent().parent();
       //console.log("the iconRow", $iconRow.html() );
       var $img = $iconRow.prev(".row-looks").find("section img");
@@ -184,16 +178,11 @@ $(document).ready(function() {
     //Fav Click
     $("#fav-grid-btn").on("click", function(e) {
       console.log("i clicked fav btn", user._id);
-      // $("#grid-container").toggleClass("hide").toggleClass("grid-active");
-      // $("#looks-container").toggleClass("hide");
-      //xx $("#looks-mode-collapse").toggleClass("grid-active");
-      //showMenu();
+
       
       if ($("#grid-container").hasClass("grid-active")) {
         gridModeView();
 
-        //xx $("#grid-container").show().removeClass("grid-active");
-        //xx $("#looks-container").hide();
         $("#grid-container").removeClass("grid-active");
 
         $("#fav-all-container").empty();
@@ -276,10 +265,7 @@ $(document).ready(function() {
           }
         });
       } else {
-        //xx $("#grid-container").addClass("grid-active").hide();
-        //xx $("#looks-container").show();
-        //xx showMenu();
-        looksModeView();
+        // looksModeView();
         getLooks();
       }
     });
@@ -336,12 +322,12 @@ $(document).ready(function() {
       data: tempUser,
       success: function(data) {
         console.log(data);
-        //xx $("#grid-container").addClass("grid-active");
+
         setLooksContainer(data);
         //set locale storage session id
         localStorage.setItem("current_user", data.username);
         checkCurrentUser();
-        looksModeView();
+         looksModeView();
       }
     });
   });
@@ -381,14 +367,10 @@ $(document).ready(function() {
         //set locale storage session id
         localStorage.setItem("current_user", data.username);
         checkCurrentUser();
-
-        // $("#formSignUp").trigger("reset");
-        // $("#sign-up-btn").trigger("click");
+        // looksModeView();
       }
     });
 
-    // $("#formSignUp").trigger("reset");
-    // $("#sign-up-btn").trigger("click");
   });
 
   //Login
@@ -426,6 +408,7 @@ $(document).ready(function() {
         //set locale storage session id
         localStorage.setItem("current_user", data.username);
         checkCurrentUser();
+        // looksModeView();
       }
     });
     $("#form-login").trigger("reset");
@@ -459,10 +442,13 @@ $(document).ready(function() {
   // Current Tab
 
   // More Outfits
-  $("#fav-more-btn").on("click", moreOutfits);
+  // $("#fav-more-btn").on("click", moreOutfits);
 
   function moreOutfits() {
-    getLooks();
+    var current_user = localStorage.getItem("current_user");
+    if( current_user){
+      getLooks();
+    }
   }
   // Helper function
   function imgExtractor(obj) {
@@ -486,7 +472,7 @@ $(document).ready(function() {
   function checkCurrentUser() {
         var current_user = localStorage.getItem("current_user");
         if (current_user === undefined || current_user === null) {
-          $("#currentUser").text("Please Login ");
+          $("#currentUser").text("Please Login:");
         } else {
           $("#currentUser").text("Logged in as: " + current_user);
           console.log("current user", current_user);
@@ -515,7 +501,6 @@ $(document).ready(function() {
         if (current_user === undefined || current_user === null) {
           console.log("no current user");
 
-          // $("#fav-menu").hide(); 
         } else {
           if ($("#looks-mode-collapse").hasClass("grid-active") ){
             $("#looks-mode-collapse").show();
@@ -524,29 +509,10 @@ $(document).ready(function() {
 
             return;
           }
-        console.log("bedford");
-
-        //$("#fav-menu").show();
-        //$("#grid-container").addClass("grid-active").show();
 
         $("#fav-menu").slideToggle("fast");
         $("#menu-collapse").toggleClass("glyphicon-plus").toggleClass("glyphicon-minus");
 
-        //  could not fix the views for showing buttons that are not clickable. sorry:(
-        //   console.log("the data is:", data);
-        //   if($("#looks-mode-collapse").hasClass("looks-mode-view") ){
-        //      $("#menu-collapse").toggleClass("glyphicon-plus").toggleClass("glyphicon-minus");
-        //      $("#fav-menu").slideToggle("fast");
-        //      $("#looks-mode-collapse").removeClass("looks-mode-view");
-
-        //   } else {
-        //     console.log("don't show");
-        //     $("#looks-mode-collapse").hide().addClass("looks-mode-view");
-        //     $("#menu-collapse").toggleClass("glyphicon-plus").toggleClass("glyphicon-minus");
-        //     $("#fav-menu").slideToggle("fast");
-
-        //     //$("#fav-menu").show(); 
-        //   }
       }
   }
 
@@ -560,7 +526,11 @@ $(document).ready(function() {
     var $guest_btn = $("#guest-btn");
     var $login = $("#login-btn");
     var $sign_up_btn = $("#sign-up-btn");
+    var $iconsRow = $(".icons-row");
+    var $msgLoginHelp = $("#msg-login-help");
     if(current_user){
+      $iconsRow.show();
+      $msgLoginHelp.hide();
       $guest_btn.hide();
       $login.hide();
       $sign_up_btn.hide();
@@ -572,6 +542,8 @@ $(document).ready(function() {
       // $("#menu-collapse").addClass("glyphicon-plus").removeClass("glyphicon-minus");
 
     } else {
+      $iconsRow.hide();
+      $msgLoginHelp.show();
       $guest_btn.show();
       $login.show();
       $sign_up_btn.show();
@@ -615,44 +587,7 @@ $(document).ready(function() {
       $(this).focusout();
     });
   }
-    // $("img").on("error", function(event){
-    //   alert("error with image");
-    // });
-  
-    // $('img').error(function () {
-    //     console.log("picture error", this);
-    // });
-
-
-    // $("img").error(function(){
-    //     alert("error with image");
-    // });
-
-    //console.log("in fav act func", $(btn) );
-  
-// });
-
-// document.body.addEventListener("error", function(event){
-//   //alert("error with image");
-
-//   console.log("the this error", event.srcElement);
-
-
-// }, true);
-
-
-// $("img").error(function(){
-//     alert("error with image");
-// });
-
-
-// var list = document.getElementsByTagName("img");
-// console.log("the list is ", list);
-// list.each(function(img){
-
-// img.addEventListener("error", function(){
-//   console.log("error with image");
-// }, true);
+   
 });
 
 
