@@ -26,8 +26,7 @@ $(document).ready(function() {
   getLooks();
   // looksModeView();
 
-  // $("div.row-sign-up").hide();
-  // $("div.row-login").hide();
+
   var looks = [{
     url: "http://topmodafemei.ro/wp-content/uploads/2014/08/outfit6.png",
     createdDate: new Date()
@@ -442,8 +441,6 @@ $(document).ready(function() {
   // Current Tab
 
   // More Outfits
-  // $("#fav-more-btn").on("click", moreOutfits);
-
   function moreOutfits() {
     var current_user = localStorage.getItem("current_user");
     if( current_user){
