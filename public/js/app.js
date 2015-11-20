@@ -442,7 +442,7 @@ $(document).ready(function() {
 
   // More Outfits
   function moreOutfits() {
-    if ($("#grid-container").hasClass("grid-active")) {
+    if (!$("#grid-container").hasClass("grid-active")) {
       getLooks();
     }
   }
