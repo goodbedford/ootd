@@ -24,7 +24,7 @@ $(document).ready(function() {
   setCurrentUser();
   checkCurrentUser();
   getLooks();
-  // looksModeView();
+  looksModeView();
 
 
   var looks = [{
@@ -54,7 +54,13 @@ $(document).ready(function() {
             //console.log(look);
           var $look = template(look);
           $("#looks-container").append($look);
-          looksModeView();
+          // looksModeView();
+          var current_user = localStorage.getItem("current_user");
+          if( current_user){
+            $(".icons-row").show(); 
+          } else {
+            $(".icons-row").hide();
+          }
         });
       }
     });
@@ -264,7 +270,7 @@ $(document).ready(function() {
           }
         });
       } else {
-        // looksModeView();
+        looksModeView();
         getLooks();
       }
     });
@@ -420,7 +426,7 @@ $(document).ready(function() {
       success: function(data) {
         console.log(data);
         checkCurrentUser();
-        showMenu();
+        //showMenu();
         $("#grid-container").remove("grid-active").hide();
         $("#looks-container").show();
         getLooks();
@@ -442,9 +448,7 @@ $(document).ready(function() {
 
   // More Outfits
   function moreOutfits() {
-    if (!$("#grid-container").hasClass("grid-active")) {
       getLooks();
-    }
   }
   // Helper function
   function imgExtractor(obj) {
@@ -491,7 +495,6 @@ $(document).ready(function() {
   //return current User
   function showMenu() {
         var current_user = localStorage.getItem("current_user");
-        //console.log("localstorage user:", current_user)
         
         //if current user show fav-menu
         if (current_user === undefined || current_user === null) {
