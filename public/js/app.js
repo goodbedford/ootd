@@ -26,21 +26,6 @@ $(document).ready(function() {
   getLooks();
   looksModeView();
 
-
-  var looks = [{
-    url: "http://topmodafemei.ro/wp-content/uploads/2014/08/outfit6.png",
-    createdDate: new Date()
-  }, {
-    url: "http://www.designsnext.com/wp-content/uploads/2014/05/Back-to-School-Outfit-Ideas-4.jpg",
-    createdDate: new Date()
-  }, {
-    url: "https://s-media-cache-ak0.pinimg.com/236x/ea/af/95/eaaf95a776e011ee7f877b9daf166193.jpg",
-    createdDate: new Date()
-  }, {
-    url: "https://cevalenti.files.wordpress.com/2013/08/casual-outfits-51.jpg",
-    createdDate: new Date()
-  }];
-
   //GET looks
   function getLooks() {
     $.ajax({
@@ -442,7 +427,6 @@ $(document).ready(function() {
     //showMenu();
     
    $("#fav-menu").slideToggle("fast");
-    //$(this).toggleClass("glyphicon-plus").toggleClass("glyphicon-minus");
   });
   // Current Tab
 
@@ -538,7 +522,6 @@ $(document).ready(function() {
       $looks_collapse.hide();
       $grid_container.addClass("grid-active").hide();
       $looks_container.show();
-      // $("#menu-collapse").addClass("glyphicon-plus").removeClass("glyphicon-minus");
 
     } else {
       $iconsRow.hide();
@@ -551,7 +534,6 @@ $(document).ready(function() {
       $fav_grid_button.hide();
       $grid_container.removeClass("grid-active").hide();
       $looks_container.show();
-      // $("#menu-collapse").addClass("glyphicon-plus").removeClass("glyphicon-minus");
 
     }
   }
