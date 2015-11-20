@@ -21,8 +21,8 @@ $(document).ready(function() {
   });
   //load page with looks
 
-  checkCurrentUser();
   setCurrentUser();
+  checkCurrentUser();
   getLooks();
   // looksModeView();
 
@@ -442,8 +442,7 @@ $(document).ready(function() {
 
   // More Outfits
   function moreOutfits() {
-    var current_user = localStorage.getItem("current_user");
-    if( current_user){
+    if ($("#grid-container").hasClass("grid-active")) {
       getLooks();
     }
   }
